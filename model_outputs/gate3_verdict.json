@@ -1,0 +1,25 @@
+{
+  "gate": 3,
+  "name": "Model build",
+  "verdict": "PASS",
+  "score": 5,
+  "checks": [
+    {
+      "name": "model family comparison",
+      "status": "PASS",
+      "detail": "Linear Regression, Ridge, Lasso, Random Forest, and XGBoost were trained and compared."
+    },
+    {
+      "name": "best model selected",
+      "status": "PASS",
+      "detail": "Best test R2 model: Ridge."
+    }
+  ],
+  "evidence": {
+    "artifact": "model_outputs/metrics/model_comparison.csv",
+    "best_model": "Ridge",
+    "n_train": 95,
+    "n_test": 120
+  },
+  "warnings": []
+}

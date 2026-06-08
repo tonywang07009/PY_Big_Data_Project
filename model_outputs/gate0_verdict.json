@@ -1,0 +1,32 @@
+{
+  "gate": 0,
+  "name": "Data readiness",
+  "verdict": "CONDITIONAL",
+  "score": 3,
+  "checks": [
+    {
+      "name": "formal county scope coverage",
+      "status": "CONDITIONAL",
+      "detail": "Missing requested county data: 連江縣."
+    },
+    {
+      "name": "raw data availability",
+      "status": "PASS",
+      "detail": "Encoded source dataset and county mapping were readable."
+    }
+  ],
+  "evidence": {
+    "available_scope_count": 5,
+    "missing_scope_count": 1,
+    "scope_codes_used": [
+      1,
+      2,
+      15,
+      17,
+      18
+    ]
+  },
+  "warnings": [
+    "Requested county not found in source mapping/data: 連江縣"
+  ]
+}

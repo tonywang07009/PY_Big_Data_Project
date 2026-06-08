@@ -1,0 +1,29 @@
+{
+  "gate": 2,
+  "name": "Clustering",
+  "verdict": "PASS",
+  "score": 5,
+  "checks": [
+    {
+      "name": "scope-only clustering",
+      "status": "PASS",
+      "detail": "K-Means profiles were built only from formal in-scope counties available in data."
+    },
+    {
+      "name": "dynamic K range",
+      "status": "PASS",
+      "detail": "K values were bounded by the scoped county count before silhouette scoring."
+    }
+  ],
+  "evidence": {
+    "artifact": "model_outputs/cluster_assignments.csv",
+    "scope_codes_used": [
+      1,
+      2,
+      15,
+      17,
+      18
+    ]
+  },
+  "warnings": []
+}

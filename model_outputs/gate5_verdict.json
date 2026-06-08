@@ -1,0 +1,23 @@
+{
+  "gate": 5,
+  "name": "Interpretability",
+  "verdict": "PASS",
+  "score": 5,
+  "checks": [
+    {
+      "name": "Ridge coefficient explanation",
+      "status": "PASS",
+      "detail": "Standardized Ridge coefficients were exported for the best linear-model explanation."
+    },
+    {
+      "name": "XGBoost SHAP comparison",
+      "status": "PASS",
+      "detail": "SHAP importance table includes 18 features."
+    }
+  ],
+  "evidence": {
+    "ridge_artifact": "model_outputs/metrics/ridge_coefficients.csv",
+    "shap_artifact": "model_outputs/shap/shap_importance.csv"
+  },
+  "warnings": []
+}

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MecDonate Dashboard</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f2933;
+      --muted: #5f6c7b;
+      --line: #d8dee6;
+      --paper: #f7f8fa;
+      --panel: #ffffff;
+      --blue: #1b5c8c;
+      --green: #27735f;
+      --red: #a33c2f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.45;
+    }
+    header {
+      padding: 28px 32px 18px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: 0; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 20px; margin-bottom: 12px; }
+    h3 { font-size: 15px; margin-bottom: 8px; }
+    main { max-width: 1220px; margin: 0 auto; padding: 24px 20px 40px; }
+    .subtitle { color: var(--muted); margin-top: 8px; max-width: 860px; }
+    .grid { display: grid; gap: 16px; }
+    .metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 20px; }
+    .two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .metric-value { font-size: 28px; font-weight: 700; color: var(--blue); }
+    .metric-label { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      color: #ffffff;
+      background: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .status.conditional { background: var(--red); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 8px 6px; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-weight: 700; }
+    img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #ffffff; }
+    .section { margin-top: 20px; }
+    .note { color: var(--muted); font-size: 14px; }
+    @media (max-width: 900px) {
+      .metrics, .two { grid-template-columns: 1fr; }
+      header { padding: 22px 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MecDonate Final Dashboard</h1>
+    <div class="subtitle">Scope-limited county donation ratio prediction, priority scoring, clustering, model validation, and interpretability summary.</div>
+  </header>
+  <main>
+    <section class="grid metrics">
+      <div class="panel">
+        <div class="metric-value">5/6</div>
+        <div class="metric-label">scope counties available</div>
+      </div>
+      <div class="panel">
+        <div class="metric-value">Ridge</div>
+        <div class="metric-label">best test model</div>
+      </div>
+      <div class="panel">
+        <div class="metric-value">0.919</div>
+        <div class="metric-label">test R2</div>
+      </div>
+      <div class="panel">
+        <div class="metric-value">120</div>
+        <div class="metric-label">priority rows</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Data Readiness</h2>
+      <p><span class="status conditional">CONDITIONAL</span></p>
+      <p class="note">Missing requested county data: 連江縣. Formal modeling uses only available in-scope counties and does not add substitute data.</p>
+    </section>
+
+    <section class="section grid two">
+      <div class="panel">
+        <h2>Priority Scores</h2>
+        <table><thead><tr><th>rank</th><th>county_name</th><th>month</th><th>predicted_donation_ratio</th><th>invoice_count</th><th>expected_donated_count</th><th>normalized_priority_score</th></tr></thead><tbody><tr><td>1</td><td>台北市</td><td>2024-05</td><td>0.0242</td><td>178,599,146</td><td>4323073.7100</td><td>1.0000</td></tr><tr><td>2</td><td>台北市</td><td>2024-07</td><td>0.0230</td><td>179,297,688</td><td>4119145.0423</td><td>0.9527</td></tr><tr><td>3</td><td>台北市</td><td>2024-11</td><td>0.0221</td><td>185,696,567</td><td>4109742.1368</td><td>0.9505</td></tr><tr><td>4</td><td>台北市</td><td>2024-06</td><td>0.0236</td><td>174,431,178</td><td>4108210.2147</td><td>0.9502</td></tr><tr><td>5</td><td>台北市</td><td>2024-08</td><td>0.0224</td><td>183,443,397</td><td>4108094.2107</td><td>0.9502</td></tr><tr><td>6</td><td>台北市</td><td>2023-05</td><td>0.0237</td><td>168,545,559</td><td>3994290.3600</td><td>0.9238</td></tr><tr><td>7</td><td>台北市</td><td>2024-12</td><td>0.0213</td><td>186,912,671</td><td>3985178.2825</td><td>0.9216</td></tr><tr><td>8</td><td>台北市</td><td>2023-07</td><td>0.0229</td><td>172,601,473</td><td>3960142.2642</td><td>0.9158</td></tr><tr><td>9</td><td>台北市</td><td>2024-04</td><td>0.0233</td><td>169,902,851</td><td>3955955.8349</td><td>0.9149</td></tr><tr><td>10</td><td>台北市</td><td>2023-08</td><td>0.0226</td><td>174,927,157</td><td>3948332.6812</td><td>0.9131</td></tr><tr><td>11</td><td>台北市</td><td>2024-03</td><td>0.0225</td><td>175,684,907</td><td>3947824.9380</td><td>0.9130</td></tr><tr><td>12</td><td>台北市</td><td>2024-10</td><td>0.0221</td><td>176,730,529</td><td>3907875.8928</td><td>0.9037</td></tr></tbody></table>
+      </div>
+      <div class="panel">
+        <h2>Model Metrics</h2>
+        <table><thead><tr><th>model</th><th>test_RMSE</th><th>test_R2</th><th>train_R2</th></tr></thead><tbody><tr><td>Ridge</td><td>0.0022</td><td>0.9186</td><td>0.9437</td></tr><tr><td>Lasso</td><td>0.0027</td><td>0.8756</td><td>0.9305</td></tr><tr><td>Linear Regression</td><td>0.0036</td><td>0.7725</td><td>0.9545</td></tr><tr><td>XGBoost</td><td>0.0056</td><td>0.4488</td><td>0.9974</td></tr><tr><td>Random Forest</td><td>0.0067</td><td>0.2229</td><td>0.9868</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <section class="section grid two">
+      <div class="panel">
+        <h2>Clustering</h2>
+        <p class="note">Best K: 3</p>
+        <table><thead><tr><th>county_label</th><th>county_english_name</th><th>county_name</th><th>cluster</th><th>pc1</th><th>pc2</th></tr></thead><tbody><tr><td>1</td><td>Taichung</td><td>台中市</td><td>2</td><td>0.3017</td><td>1.6500</td></tr><tr><td>2</td><td>Taipei</td><td>台北市</td><td>0</td><td>4.3788</td><td>-1.1928</td></tr><tr><td>15</td><td>Hualien</td><td>花蓮縣</td><td>1</td><td>-2.5040</td><td>-1.5328</td></tr><tr><td>17</td><td>Yunlin</td><td>雲林縣</td><td>1</td><td>-2.0590</td><td>-0.5220</td></tr><tr><td>18</td><td>Kaohsiung</td><td>高雄市</td><td>2</td><td>-0.1174</td><td>1.5975</td></tr></tbody></table>
+      </div>
+      <div class="panel">
+        <h2>Cluster PCA</h2>
+        <img src="../model_outputs/clustering_pca.png" alt="County cluster PCA plot">
+      </div>
+    </section>
+
+    <section class="section grid two">
+      <div class="panel">
+        <h2>Ridge Explanation</h2>
+        <table><thead><tr><th>feature</th><th>standardized_coefficient</th><th>abs_standardized_coefficient</th></tr></thead><tbody><tr><td>donation_ratio_lag3</td><td>0.0029</td><td>0.0029</td></tr><tr><td>avg_invoice_value</td><td>-0.0020</td><td>0.0020</td></tr><tr><td>carrier_usage_ratio</td><td>0.0012</td><td>0.0012</td></tr><tr><td>donation_ratio_roll3</td><td>0.0010</td><td>0.0010</td></tr><tr><td>donation_seasonal</td><td>0.0009</td><td>0.0009</td></tr><tr><td>log_total_count</td><td>0.0007</td><td>0.0007</td></tr><tr><td>industry_hhi</td><td>-0.0005</td><td>0.0005</td></tr><tr><td>month_cos</td><td>-0.0004</td><td>0.0004</td></tr><tr><td>county_type=remote</td><td>-0.0004</td><td>0.0004</td></tr><tr><td>county_type=metropolitan</td><td>0.0003</td><td>0.0003</td></tr></tbody></table>
+      </div>
+      <div class="panel">
+        <h2>XGBoost SHAP</h2>
+        <table><thead><tr><th>feature</th><th>mean_abs_shap</th></tr></thead><tbody><tr><td>housing_burden</td><td>0.0028</td></tr><tr><td>donation_ratio_lag1</td><td>0.0006</td></tr><tr><td>industry_hhi</td><td>0.0005</td></tr><tr><td>donation_ratio_lag3</td><td>0.0002</td></tr><tr><td>donation_ratio_lag2</td><td>0.0002</td></tr><tr><td>donation_seasonal</td><td>0.0001</td></tr><tr><td>log_total_count</td><td>0.0001</td></tr><tr><td>month_sin</td><td>0.0001</td></tr><tr><td>month_cos</td><td>0.0001</td></tr><tr><td>n_active_industries</td><td>0.0000</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <section class="section grid two">
+      <div class="panel">
+        <h2>Model Comparison Plot</h2>
+        <img src="../model_outputs/metrics/model_comparison.png" alt="Model comparison chart">
+      </div>
+      <div class="panel">
+        <h2>SHAP Summary Plot</h2>
+        <img src="../model_outputs/shap/shap_summary.png" alt="SHAP summary chart">
+      </div>
+    </section>
+
+    <section class="section panel">
+      <h2>Data Limitations</h2>
+      <p class="note">The final analysis is scoped to the available project counties in the encoded data. Lienchiang County is documented as a data gap. The train/test split is time based, with train years 2019, 2020, 2022 and test years 2023, 2024. The source data has a coverage gap, so lag features are date-joined and missing cross-gap lags are excluded from training.</p>
+    </section>
+  </main>
+</body>
+</html>
