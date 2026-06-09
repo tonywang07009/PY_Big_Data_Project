@@ -52,6 +52,7 @@ def main():
 
     print("=" * 60, "\n[2/5] K-Means clustering")
     clustering.run(cm, OUT)
+    clustering.run_v2(cm, OUT)
 
     print("=" * 60, "\n[3/5] Regression model comparison and priority scoring")
     model_summary = model.run(cm, METRICS, priority_path=OUT / "priority_scores.csv")
