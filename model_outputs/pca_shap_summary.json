@@ -1,0 +1,71 @@
+{
+  "best_k": 3,
+  "explained_variance_ratio": [
+    0.9000210750701579,
+    0.07747391139123662
+  ],
+  "pc1_top5": [
+    {
+      "feature": "price_income_ratio",
+      "mean_abs_shap": 4.240721207884528,
+      "coefficient": 0.9982878536722413,
+      "pca_loading": 0.9982878536722406
+    },
+    {
+      "feature": "carrier_usage_ratio",
+      "mean_abs_shap": 0.06328372127654439,
+      "coefficient": 0.05141162304832631,
+      "pca_loading": 0.051411623048326575
+    },
+    {
+      "feature": "housing_burden",
+      "mean_abs_shap": 0.008624514486054538,
+      "coefficient": 0.021465242691988993,
+      "pca_loading": 0.02146524269199046
+    },
+    {
+      "feature": "donation_ratio",
+      "mean_abs_shap": 0.00578472668263139,
+      "coefficient": 0.014733077934936167,
+      "pca_loading": 0.014733077934934462
+    },
+    {
+      "feature": "avg_invoice_value",
+      "mean_abs_shap": 0.002410171382693563,
+      "coefficient": 0.005362893659033893,
+      "pca_loading": 0.005362893659033868
+    }
+  ],
+  "pc2_top5": [
+    {
+      "feature": "carrier_usage_ratio",
+      "mean_abs_shap": 1.1134239773575794,
+      "coefficient": 0.9045443703717954,
+      "pca_loading": 0.9045443703717962
+    },
+    {
+      "feature": "price_income_ratio",
+      "mean_abs_shap": 0.2411413693625214,
+      "coefficient": -0.05676593396541233,
+      "pca_loading": -0.056765933965412116
+    },
+    {
+      "feature": "avg_invoice_value",
+      "mean_abs_shap": 0.11348087349650422,
+      "coefficient": 0.2525072952347003,
+      "pca_loading": 0.2525072952347001
+    },
+    {
+      "feature": "housing_burden",
+      "mean_abs_shap": 0.09667700957023136,
+      "coefficient": 0.24061591832401177,
+      "pca_loading": 0.24061591832401386
+    },
+    {
+      "feature": "donation_ratio",
+      "mean_abs_shap": 0.06278104311686311,
+      "coefficient": 0.1598965779756739,
+      "pca_loading": 0.15989657797567308
+    }
+  ]
+}
