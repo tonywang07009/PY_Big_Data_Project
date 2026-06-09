@@ -121,13 +121,32 @@ def write_county_comparison(valid: pd.DataFrame, valid_x: pd.DataFrame, model_co
     scored["count_diff"] = scored["predicted_donation_count"] - scored[TARGET]
     scored["abs_count_diff"] = np.abs(scored["count_diff"])
 
-    county = (
-        scored.groupby(["county_label", "county_name"], sort=True)
+    county_month = (
+        scored.groupby(["county_label", "county_name", "month"], sort=True)
         .agg(
-            actual_donation_count=(TARGET, "sum"),
-            predicted_donation_count=("predicted_donation_count", "sum"),
+            actual_donation_count=(TARGET, "first"),
+            predicted_donation_count=("predicted_donation_count", "mean"),
+            raw_rows=(TARGET, "size"),
             mean_abs_row_error=("abs_count_diff", "mean"),
-            validation_rows=(TARGET, "size"),
+        )
+        .reset_index()
+    )
+    county_month["count_diff"] = county_month["predicted_donation_count"] - county_month["actual_donation_count"]
+    county_month["abs_count_diff"] = county_month["count_diff"].abs()
+    county_month["pct_diff"] = (
+        county_month["count_diff"] / np.maximum(county_month["actual_donation_count"], 1e-6) * 100.0
+    )
+    county_month["abs_pct_diff"] = county_month["pct_diff"].abs()
+    county_month.to_csv(OUTDIR / "county_month_validation_comparison.csv", index=False)
+
+    county = (
+        county_month.groupby(["county_label", "county_name"], sort=True)
+        .agg(
+            actual_donation_count=("actual_donation_count", "sum"),
+            predicted_donation_count=("predicted_donation_count", "sum"),
+            mean_abs_month_error=("abs_count_diff", "mean"),
+            validation_months=("month", "size"),
+            raw_rows=("raw_rows", "sum"),
         )
         .reset_index()
     )
@@ -137,6 +156,23 @@ def write_county_comparison(valid: pd.DataFrame, valid_x: pd.DataFrame, model_co
     county["abs_pct_diff"] = county["pct_diff"].abs()
     county = county.sort_values("abs_count_diff", ascending=False).reset_index(drop=True)
     county.to_csv(OUTDIR / "county_validation_comparison.csv", index=False)
+
+    county_raw = (
+        scored.groupby(["county_label", "county_name"], sort=True)
+        .agg(
+            actual_donation_count=(TARGET, "sum"),
+            predicted_donation_count=("predicted_donation_count", "sum"),
+            mean_abs_row_error=("abs_count_diff", "mean"),
+            validation_rows=(TARGET, "size"),
+        )
+        .reset_index()
+    )
+    county_raw["count_diff"] = county_raw["predicted_donation_count"] - county_raw["actual_donation_count"]
+    county_raw["abs_count_diff"] = county_raw["count_diff"].abs()
+    county_raw["pct_diff"] = county_raw["count_diff"] / np.maximum(county_raw["actual_donation_count"], 1e-6) * 100.0
+    county_raw["abs_pct_diff"] = county_raw["pct_diff"].abs()
+    county_raw = county_raw.sort_values("abs_count_diff", ascending=False).reset_index(drop=True)
+    county_raw.to_csv(OUTDIR / "county_validation_comparison_raw_rows.csv", index=False)
 
     plt.figure(figsize=(10, 6))
     x = np.arange(len(county))
@@ -152,8 +188,10 @@ def write_county_comparison(valid: pd.DataFrame, valid_x: pd.DataFrame, model_co
     plt.close()
 
     summary = {
+        "comparison_basis": "county-month deduplicated first, then aggregated to county",
         "largest_abs_count_diff_county": county.iloc[0][["county_name", "abs_count_diff", "pct_diff"]].to_dict(),
         "largest_abs_pct_diff_county": county.sort_values("abs_pct_diff", ascending=False).iloc[0][["county_name", "abs_pct_diff", "count_diff"]].to_dict(),
+        "raw_row_comparison_file": "county_validation_comparison_raw_rows.csv",
     }
     (OUTDIR / "county_validation_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     return summary

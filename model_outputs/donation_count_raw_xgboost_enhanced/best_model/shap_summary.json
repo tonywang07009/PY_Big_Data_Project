@@ -1,0 +1,66 @@
+{
+  "target": "donation_count",
+  "shap_sample_rows": 5000,
+  "top_features": [
+    {
+      "feature": "housing_burden",
+      "mean_abs_shap": 470132.21875
+    },
+    {
+      "feature": "industry_entropy",
+      "mean_abs_shap": 65761.4375
+    },
+    {
+      "feature": "donation_count_lag1",
+      "mean_abs_shap": 65201.3046875
+    },
+    {
+      "feature": "donation_count_lag2",
+      "mean_abs_shap": 46700.37109375
+    },
+    {
+      "feature": "month_num",
+      "mean_abs_shap": 29369.73828125
+    },
+    {
+      "feature": "total_county_invoice_count",
+      "mean_abs_shap": 23398.19921875
+    },
+    {
+      "feature": "donation_count_roll3_mean",
+      "mean_abs_shap": 21199.984375
+    },
+    {
+      "feature": "top3_industry_share",
+      "mean_abs_shap": 11350.29296875
+    },
+    {
+      "feature": "carrier_usage_ratio",
+      "mean_abs_shap": 10481.5771484375
+    },
+    {
+      "feature": "total_county_invoice_amount",
+      "mean_abs_shap": 10179.9619140625
+    },
+    {
+      "feature": "price_income_ratio",
+      "mean_abs_shap": 9811.8310546875
+    },
+    {
+      "feature": "donation_count_roll3_max",
+      "mean_abs_shap": 9020.3486328125
+    },
+    {
+      "feature": "donation_count_roll3_min",
+      "mean_abs_shap": 3101.545166015625
+    },
+    {
+      "feature": "donation_count_lag3",
+      "mean_abs_shap": 2547.996826171875
+    },
+    {
+      "feature": "log_total_county_invoice_count",
+      "mean_abs_shap": 1990.3258056640625
+    }
+  ]
+}

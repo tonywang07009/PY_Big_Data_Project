@@ -1,12 +1,14 @@
 {
+  "comparison_basis": "county-month deduplicated first, then aggregated to county",
   "largest_abs_count_diff_county": {
     "county_name": "台北市",
-    "abs_count_diff": 1136913367.0,
-    "pct_diff": -7.40646903527132
+    "abs_count_diff": 7240326.0,
+    "pct_diff": -7.457683619628538
   },
   "largest_abs_pct_diff_county": {
     "county_name": "台中市",
-    "abs_pct_diff": 43.496021827337536,
-    "count_diff": 623201730.0
-  }
+    "abs_pct_diff": 43.094558253457414,
+    "count_diff": 4203301.0
+  },
+  "raw_row_comparison_file": "county_validation_comparison_raw_rows.csv"
 }
