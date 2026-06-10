@@ -69,7 +69,7 @@ This file records human-approved project decisions that affect research directio
 - **Rationale**: Folder names should reflect user intent and maintenance purpose.
 - **Impact**:
   - `source_materials/` was renamed to `source_materials/`.
-  - `tools/` was renamed to `pipeline_tools/`.
+  - `tools/` was renamed to `pipeline_tools/` at that time. This is now a historical note rather than the current repository structure.
   - `model_outputs/` was renamed to `model_outputs/`.
   - `agent_doc/tool_designs/` content moved to `agent_doc/agent_doc/tool_designss/`.
   - `test_log/` content moved into `agent_doc/`.

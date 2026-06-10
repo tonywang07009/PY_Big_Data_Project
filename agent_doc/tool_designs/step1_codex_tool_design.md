@@ -362,6 +362,8 @@ You are a senior data engineer. Execute the following micro-tasks in order.
 Each task must verify its upstream artifact before starting.
 Do NOT pause between tasks. After T1-C completes, generate both documents.
 
+> Historical note: this design references the retired `pipeline_tools/` workflow and is no longer the current executable structure of the repository.
+
 ## Micro-Tasks
 
 ### T1-A — File Discovery
@@ -414,4 +416,3 @@ Do NOT pause between tasks. After T1-C completes, generate both documents.
 - **FMEA (Failure Mode & Effects Analysis)** — The three-tier verdict (PASS / CONDITIONAL / FAIL) mirrors FMEA's RPN severity classification
 - **Supply Chain Traceability** — SHA-256 hashing in T1-A provides an immutable data lineage record, directly applicable to IoT sensor data audit trails
 - **O-RAN Gate Alignment** — T1-A → T1-B → T1-C mirrors the Gate 1 → Gate 2 → Gate 3 progression in your project_plan.md; the same blocking rule applies
-

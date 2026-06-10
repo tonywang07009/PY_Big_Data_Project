@@ -48,7 +48,8 @@ Read only the files needed for the current task:
 ```text
 source_materials/      source proposal and original reference files
 data/raw/              read-only data inputs
-pipeline_tools/        executable pipeline modules
+data/county_zscore_split/ standalone county-based scaling outputs
+src/                   executable modules used by run_all.py
 model_outputs/         machine-readable outputs, metrics, models, SHAP files
 reports/               human-facing deliverables
 agent_doc/             agent routing, decisions, gate specs, templates, memory
