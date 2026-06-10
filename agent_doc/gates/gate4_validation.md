@@ -2,24 +2,54 @@
 
 ## Purpose
 
-Confirm model performance with time-aware validation and leakage control.
+Validate that the model evaluation policy is time-aware, leakage-resistant, and explicit about which years belong to training and which belong to future evaluation.
 
-## Planned Micro-Tasks
+## Current Main Implementation
 
-- T4-A: create time-based train/test split
-- T4-B: run `TimeSeriesSplit` cross-validation
-- T4-C: summarize RMSE, MAE, and R2
-- T4-D: audit leakage and runtime stability
-- T4-E: produce Diver/Counter validation verdict
+- Entrypoint: `run_all.py`
+- Main code path:
+  - `src/model.split()`
+  - gate evidence assembled by `src/final_delivery.write_gate_verdicts()`
 
-## Expected Outputs
+## Current Formal Validation Policy
 
-- `model_outputs/metrics/validation_metrics.json`
-- `model_outputs/validation_audit.json`
+- No shuffling.
+- Train on `2019-2022`.
+- Test on `2023-2024`.
+- Use RMSE and R2 as the primary formal comparison metrics.
+
+## Current Main Output Artifacts
+
 - `model_outputs/gate4_verdict.json`
-- `reports/step4_report.md`
+- evaluation evidence embedded in:
+  - `model_outputs/metrics/model_comparison.csv`
+  - `model_outputs/metrics/model_results.json`
+  - `reports/final_project_report.md`
+  - `reports/tour_guide.md`
 
-## Discussion Status
+## Supplementary Validation Workflow Added In This Chat
 
-Implementation details are not finalized. Discuss validation windows, pass thresholds, and leakage audit rules before coding.
+- Script: `train_donation_ratio_county_scaled_year_cv.py`
+- Purpose:
+  - perform rolling year validation for the county-scaled `donation_ratio` workflow
+  - recompute county-level scaling separately inside each fold
+  - avoid future leakage by fitting each county scaler only on fold-train years
+- Validation folds currently produced:
+  - `2020`
+  - `2022`
+  - `2023`
+  - `2024`
+- Output root:
+  - `model_outputs/donation_ratio_county_scaled_year_cv/`
 
+## Current Supplementary Output Artifacts
+
+- `model_outputs/donation_ratio_county_scaled_year_cv/metrics_by_fold.csv`
+- `model_outputs/donation_ratio_county_scaled_year_cv/metrics_summary.json`
+- `model_outputs/donation_ratio_county_scaled_year_cv/validation_predictions_by_fold.csv`
+- `model_outputs/donation_ratio_county_scaled_year_cv/performance_result.png`
+
+## Current Status
+
+- The formal project pipeline uses one fixed future holdout.
+- The rolling year CV workflow now exists as an additional validation branch for the county-scaled `donation_ratio` experiment.

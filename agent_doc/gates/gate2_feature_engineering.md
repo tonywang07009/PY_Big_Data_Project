@@ -2,24 +2,60 @@
 
 ## Purpose
 
-Represent county heterogeneity and prepare model-ready features.
+Represent county-level structure, time behavior, and clustering-ready profiles from the preprocessed county-month matrix.
 
-## Planned Micro-Tasks
+## Current Main Implementation
 
-- T2-A: build county-level feature matrix
-- T2-B: encode county identity and county type
-- T2-C: run K-Means with Elbow and Silhouette checks
-- T2-D: create PCA visualization for cluster interpretation
-- T2-E: produce Diver/Counter feature verdict
+- Entrypoint: `run_all.py`
+- Main code path:
+  - `src/features.build_county_month()`
+  - `src/clustering.run()`
+  - `src/clustering.run_v2()`
 
-## Expected Outputs
+## Current Feature Contracts
 
-- `model_outputs/feature_matrix.parquet`
-- `model_outputs/cluster_profile.json`
-- `model_outputs/gate2_verdict.json`
-- `reports/step2_report.md`
+- Main regression target in the formal project pipeline:
+  - `donation_ratio`
+- Main engineered numeric features include:
+  - `log_total_count`
+  - `log_total_amount`
+  - `avg_invoice_value`
+  - `carrier_usage_ratio`
+  - `n_active_industries`
+  - `industry_hhi`
+  - `donation_seasonal`
+  - `month_sin`
+  - `month_cos`
+  - `donation_ratio_lag1`
+  - `donation_ratio_lag2`
+  - `donation_ratio_lag3`
+  - `donation_ratio_roll3`
+- Main categorical feature:
+  - `county_type`
 
-## Discussion Status
+## Current Clustering Workflows
 
-Implementation details are not finalized. Discuss county type definitions, cluster feature set, and K selection before coding.
+### Legacy clustering
 
+- Entry: `src/clustering.run()`
+- Uses county mean profiles.
+- Produces:
+  - `model_outputs/cluster_assignments.csv`
+  - `model_outputs/clustering_pca.png`
+  - `model_outputs/clustering_elbow_silhouette.png`
+  - `model_outputs/clustering_metrics.json`
+
+### Representative-space clustering
+
+- Entry: `src/clustering.run_v2()`
+- Uses county representative features built from profile mean and std.
+- Produces:
+  - `model_outputs/county_cluster_v2.csv`
+  - `model_outputs/county_month_pca_points_v2.csv`
+  - grouped PCA figures
+  - `model_outputs/clustering_v2_metrics.json`
+
+## Current Status
+
+- Implemented and active.
+- Gate 2 in this repository covers both engineered feature creation and county clustering outputs.
