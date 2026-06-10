@@ -1,0 +1,18 @@
+{
+  "pipeline": "county_scaled_year_cv",
+  "target": "donation_ratio",
+  "source_dataset": "/Users/tuxinhe/Documents/project_code/Data_minning/final_project/PY_Big_Data_Project/data/raw/encoded_ml_dataset.csv",
+  "validation_years": [
+    2020,
+    2022,
+    2023,
+    2024
+  ],
+  "mean_rmse": 0.0035771919573496223,
+  "mean_mae": 0.0021560427605813158,
+  "mean_smape": 83.19166632658558,
+  "mean_epsilon_mape": 79880.15025790414,
+  "mean_r2": 0.3629934166391533,
+  "best_r2_year": 2024,
+  "worst_r2_year": 2022
+}
