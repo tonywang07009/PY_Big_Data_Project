@@ -10,7 +10,6 @@
     "price_income_ratio",
     "total_county_invoice_count",
     "total_county_invoice_amount",
-    "donation_count",
     "year",
     "month_num",
     "month_sin",
@@ -28,7 +27,6 @@
     "price_income_ratio",
     "total_county_invoice_count",
     "total_county_invoice_amount",
-    "donation_count",
     "year",
     "month_num",
     "month_sin",
@@ -160,9 +158,9 @@
   ],
   "train_rows_used": 85769,
   "validation_rows_used": 24604,
-  "rmse": 0.0014045685766115265,
-  "mae": 0.0008460326605370249,
-  "smape": 12.813683476144181,
-  "epsilon_mape": 11.87109973242781,
-  "r2": 0.9339878207009
+  "rmse": 0.0019705706586591555,
+  "mae": 0.0015328744800019206,
+  "smape": 28.44845518273172,
+  "epsilon_mape": 23.896746664318687,
+  "r2": 0.87006618247126
 }

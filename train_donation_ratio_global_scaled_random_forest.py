@@ -17,44 +17,34 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from xgboost import XGBRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-TRAIN_PATH = ROOT / "data" / "county_zscore_split" / "train_scaled_all_counties.csv"
-TEST_PATH = ROOT / "data" / "county_zscore_split" / "test_scaled_all_counties.csv"
-OUTDIR = ROOT / "model_outputs" / "donation_ratio_county_scaled_xgboost"
+RAW_PATH = ROOT / "data" / "raw" / "encoded_ml_dataset.csv"
+OUTDIR = ROOT / "model_outputs" / "donation_ratio_global_scaled_random_forest"
 TARGET = "donation_ratio"
 EPSILON = 1e-6
 
 CATEGORICAL_FEATURES = ["county_label", "industry_label", "carrier_type_label"]
-EXCLUDED_NUMERIC_FEATURES = {TARGET, *CATEGORICAL_FEATURES,"donation_count", "donation_amount"}
+EXCLUDED_NUMERIC_FEATURES = {TARGET, *CATEGORICAL_FEATURES, "donation_count", "donation_amount"}
 
 
-def build_model() -> XGBRegressor:
-    return XGBRegressor(
-        objective="reg:squarederror",
-        n_estimators=500,
-        learning_rate=0.05,
-        max_depth=4,
-        subsample=0.9,
-        colsample_bytree=0.9,
-        random_state=42,
-        n_jobs=1,
-    )
+def load_dataset() -> pd.DataFrame:
+    df = pd.read_csv(RAW_PATH)
+    df["date"] = pd.to_datetime(df["month"].astype(str) + "-01")
+    df["year"] = df["date"].dt.year
+    df["month_num"] = df["date"].dt.month
+    df["month_sin"] = np.sin(2 * np.pi * df["month_num"] / 12)
+    df["month_cos"] = np.cos(2 * np.pi * df["month_num"] / 12)
+    return df
 
 
-def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
-    out = df.copy()
-    out["date"] = pd.to_datetime(out["date"])
-    out["month_num"] = out["date"].dt.month
-    out["month_sin"] = np.sin(2 * np.pi * out["month_num"] / 12)
-    out["month_cos"] = np.cos(2 * np.pi * out["month_num"] / 12)
-    return out
-
-
-def load_frames() -> tuple[pd.DataFrame, pd.DataFrame]:
-    train = add_time_features(pd.read_csv(TRAIN_PATH))
-    valid = add_time_features(pd.read_csv(TEST_PATH))
+def split_train_test(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    train = df[df["year"] < 2024].copy()
+    valid = df[df["year"] >= 2024].copy()
     return train, valid
 
 
@@ -68,32 +58,22 @@ def clean_frame(df: pd.DataFrame, numeric_features: list[str]) -> pd.DataFrame:
     return df.dropna(subset=required).copy()
 
 
-def encode_features(
-    train: pd.DataFrame,
-    valid: pd.DataFrame,
-    numeric_features: list[str],
-) -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
-    train_cat = pd.get_dummies(
-        train[CATEGORICAL_FEATURES].astype(str),
-        columns=CATEGORICAL_FEATURES,
-        prefix=CATEGORICAL_FEATURES,
-    )
-    valid_cat = pd.get_dummies(
-        valid[CATEGORICAL_FEATURES].astype(str),
-        columns=CATEGORICAL_FEATURES,
-        prefix=CATEGORICAL_FEATURES,
-    )
-    valid_cat = valid_cat.reindex(columns=train_cat.columns, fill_value=0)
+def one_hot_encoder() -> OneHotEncoder:
+    try:
+        return OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+    except TypeError:
+        return OneHotEncoder(handle_unknown="ignore", sparse=False)
 
-    train_x = pd.concat(
-        [train[numeric_features].reset_index(drop=True), train_cat.reset_index(drop=True)],
-        axis=1,
+
+def build_model(numeric_features: list[str]) -> Pipeline:
+    pre = ColumnTransformer(
+        [
+            ("num", StandardScaler(), numeric_features),
+            ("cat", one_hot_encoder(), CATEGORICAL_FEATURES),
+        ]
     )
-    valid_x = pd.concat(
-        [valid[numeric_features].reset_index(drop=True), valid_cat.reset_index(drop=True)],
-        axis=1,
-    )
-    return train_x, valid_x, train_x.columns.tolist()
+    model = RandomForestRegressor(n_estimators=400, random_state=42, n_jobs=1)
+    return Pipeline([("pre", pre), ("model", model)])
 
 
 def smape(y_true: np.ndarray, y_pred: np.ndarray) -> float:
@@ -180,7 +160,7 @@ def plot_performance(pred_df: pd.DataFrame, metrics: dict[str, float]) -> None:
     monthly_ax.grid(alpha=0.2)
     monthly_ax.legend()
 
-    fig.suptitle("Donation Ratio XGBoost Performance", fontsize=16)
+    fig.suptitle("Donation Ratio Global-Scaled Random Forest Performance", fontsize=16)
     fig.savefig(OUTDIR / "performance_result.png", dpi=180, bbox_inches="tight")
     plt.close(fig)
 
@@ -188,19 +168,21 @@ def plot_performance(pred_df: pd.DataFrame, metrics: dict[str, float]) -> None:
 def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
 
-    train_raw, valid_raw = load_frames()
+    df = load_dataset()
+    train_raw, valid_raw = split_train_test(df)
     numeric_features = get_numeric_features(train_raw)
 
     train = clean_frame(train_raw, numeric_features)
     valid = clean_frame(valid_raw, numeric_features)
 
-    train_x, valid_x, model_columns = encode_features(train, valid, numeric_features)
+    xtr = train[numeric_features + CATEGORICAL_FEATURES].copy()
+    xva = valid[numeric_features + CATEGORICAL_FEATURES].copy()
     ytr = train[TARGET].to_numpy()
     yva = valid[TARGET].to_numpy()
 
-    model = build_model()
-    model.fit(train_x, ytr)
-    preds = model.predict(valid_x[model_columns])
+    model = build_model(numeric_features)
+    model.fit(xtr, ytr)
+    preds = model.predict(xva)
     metrics = metrics_for(yva, preds)
 
     pred_df = valid[
@@ -220,22 +202,14 @@ def main() -> None:
     pred_df["ape_percent"] = pred_df["abs_error"] / np.maximum(np.abs(pred_df[TARGET]), EPSILON) * 100.0
     pred_df.to_csv(OUTDIR / "validation_predictions.csv", index=False)
 
-    importance = (
-        pd.DataFrame({"feature": model_columns, "importance": model.feature_importances_})
-        .sort_values("importance", ascending=False)
-        .reset_index(drop=True)
-    )
-    importance.to_csv(OUTDIR / "feature_importance.csv", index=False)
-    model.save_model(str(OUTDIR / "xgboost_model.json"))
-
     summary = {
-        "pipeline": "county_scaled_xgboost",
+        "pipeline": "global_scaled_random_forest",
         "target": TARGET,
-        "train_source": str(TRAIN_PATH),
-        "validation_source": str(TEST_PATH),
+        "train_source": str(RAW_PATH),
+        "validation_source": str(RAW_PATH),
+        "split_policy": "train uses year < 2024; test uses year >= 2024",
         "numeric_features": numeric_features,
         "categorical_features": CATEGORICAL_FEATURES,
-        "model_columns_after_encoding": model_columns,
         "train_rows_used": len(train),
         "validation_rows_used": len(valid),
         **metrics,

@@ -1,0 +1,31 @@
+{
+  "pipeline": "global_scaled_random_forest",
+  "target": "donation_ratio",
+  "train_source": "/Users/tuxinhe/Documents/project_code/Data_minning/final_project/PY_Big_Data_Project/data/raw/encoded_ml_dataset.csv",
+  "validation_source": "/Users/tuxinhe/Documents/project_code/Data_minning/final_project/PY_Big_Data_Project/data/raw/encoded_ml_dataset.csv",
+  "split_policy": "train uses year < 2024; test uses year >= 2024",
+  "numeric_features": [
+    "industry_invoice_count",
+    "industry_invoice_amount",
+    "housing_burden",
+    "price_income_ratio",
+    "total_county_invoice_count",
+    "total_county_invoice_amount",
+    "year",
+    "month_num",
+    "month_sin",
+    "month_cos"
+  ],
+  "categorical_features": [
+    "county_label",
+    "industry_label",
+    "carrier_type_label"
+  ],
+  "train_rows_used": 85769,
+  "validation_rows_used": 24604,
+  "rmse": 0.004038804760203541,
+  "mae": 0.002402523833755451,
+  "smape": 34.68319046877112,
+  "epsilon_mape": 38.72170545765435,
+  "r2": 0.45418697724809065
+}
