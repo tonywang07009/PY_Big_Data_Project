@@ -32,7 +32,7 @@ TARGET = "donation_ratio"
 EPSILON = 1e-6
 
 CATEGORICAL_FEATURES = ["county_label", "industry_label", "carrier_type_label"]
-EXCLUDED_NUMERIC_FEATURES = {TARGET, *CATEGORICAL_FEATURES}
+EXCLUDED_NUMERIC_FEATURES = {TARGET, *CATEGORICAL_FEATURES,"donation_count", "donation_amount"}
 # 去除掉目標變數和類別特徵，剩下的就是數值特徵了
 
 def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
@@ -171,6 +171,7 @@ def main() -> None:
 
     train_raw, valid_raw = load_frames() # 切分训练集和验证集
     numeric_features = get_numeric_features(train_raw) # 取特徵 (查是否有數值轉換)
+    print(f"Numeric features: {numeric_features}")
     train = clean_frame(train_raw, numeric_features) # 清洗数据，去掉缺失值
     valid = clean_frame(valid_raw, numeric_features) # 驗證數據 去掉缺失值
     
@@ -179,6 +180,9 @@ def main() -> None:
     print(f"train rows: {train}, valid rows: {valid} xtr shape: {xtr.columns.tolist()}, xva shape: {xva.columns.tolist()}")
     ytr = train[TARGET].to_numpy() # 取出目标变量，转换为numpy数组
     yva = valid[TARGET].to_numpy()
+
+    no_in_set = set(xtr.columns) - set(xva.columns)
+    print(f"Features in training but not in validation: {no_in_set}")
 
     rows = []
     predictions = {}

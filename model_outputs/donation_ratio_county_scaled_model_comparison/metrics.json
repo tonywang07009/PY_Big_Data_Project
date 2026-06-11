@@ -1,8 +1,8 @@
 {
   "pipeline": "county_scaled_model_comparison",
   "target": "donation_ratio",
-  "train_source": "/Users/tuxinhe/Documents/project_code/Data_minning/final_project/PY_Big_Data_Project/data/county_zscore_split/train_scaled_all_counties.csv",
-  "validation_source": "/Users/tuxinhe/Documents/project_code/Data_minning/final_project/PY_Big_Data_Project/data/county_zscore_split/test_scaled_all_counties.csv",
+  "train_source": "C:\\Users\\plmok\\Documents\\data_mining\\datamingProject\\data\\county_zscore_split\\train_scaled_all_counties.csv",
+  "validation_source": "C:\\Users\\plmok\\Documents\\data_mining\\datamingProject\\data\\county_zscore_split\\test_scaled_all_counties.csv",
   "numeric_features": [
     "industry_invoice_count",
     "industry_invoice_amount",
@@ -10,7 +10,6 @@
     "price_income_ratio",
     "total_county_invoice_count",
     "total_county_invoice_amount",
-    "donation_count",
     "year",
     "month_num",
     "month_sin",
@@ -27,48 +26,48 @@
   "results": [
     {
       "model": "Random Forest",
-      "train_r2": 0.99999998550588,
-      "rmse": 0.001397830273347314,
-      "mae": 0.0010048521845867262,
-      "smape": 17.60090688250354,
-      "epsilon_mape": 16.136146547198994,
-      "r2": 0.9346196775152675
+      "train_r2": 0.9999999961130055,
+      "rmse": 0.0015979325009558437,
+      "mae": 0.001175106783660147,
+      "smape": 20.89673173953244,
+      "epsilon_mape": 19.162086113526644,
+      "r2": 0.9145612206999164
     },
     {
       "model": "XGBoost",
-      "train_r2": 0.9997155038278488,
-      "rmse": 0.0014470190897385407,
-      "mae": 0.0008765441694128472,
-      "smape": 13.529662236399385,
-      "epsilon_mape": 12.403770157045658,
-      "r2": 0.9299373280700189
+      "train_r2": 0.9994261075740393,
+      "rmse": 0.0020132727419039584,
+      "mae": 0.0015522941798327976,
+      "smape": 29.40587442637106,
+      "epsilon_mape": 24.614388269106946,
+      "r2": 0.8643738599874222
     },
     {
       "model": "Linear Regression",
-      "train_r2": 0.9112193515533418,
-      "rmse": 0.0021584831711678886,
-      "mae": 0.0016981817773695615,
-      "smape": 24.875472174905195,
-      "epsilon_mape": 28.52425335073892,
-      "r2": 0.8441038074658404
+      "train_r2": 0.9046706937398687,
+      "rmse": 0.002112951741371606,
+      "mae": 0.001515619754908026,
+      "smape": 22.27494059908091,
+      "epsilon_mape": 22.76070497653633,
+      "r2": 0.8506114435107599
     },
     {
       "model": "Ridge",
-      "train_r2": 0.9112191746270817,
-      "rmse": 0.0021590530269658455,
-      "mae": 0.0016985764510729776,
-      "smape": 24.879949030129243,
-      "epsilon_mape": 28.530887724760557,
-      "r2": 0.8440214810642467
+      "train_r2": 0.9046704548142696,
+      "rmse": 0.0021133113279705085,
+      "mae": 0.0015158710936964042,
+      "smape": 22.277027645636647,
+      "epsilon_mape": 22.76413546742856,
+      "r2": 0.8505605926627988
     },
     {
       "model": "Lasso",
-      "train_r2": 0.8688809161833929,
-      "rmse": 0.003016376780888589,
-      "mae": 0.002386451134735486,
-      "smape": 33.98188605317984,
-      "epsilon_mape": 41.2205382248383,
-      "r2": 0.6955546447377443
+      "train_r2": 0.8640138058572582,
+      "rmse": 0.002837729622891678,
+      "mae": 0.0020814971955032094,
+      "smape": 30.147649248318395,
+      "epsilon_mape": 31.944835244339806,
+      "r2": 0.7305487503382317
     }
   ]
 }
