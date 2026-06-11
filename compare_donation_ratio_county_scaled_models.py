@@ -33,7 +33,7 @@ EPSILON = 1e-6
 
 CATEGORICAL_FEATURES = ["county_label", "industry_label", "carrier_type_label"]
 EXCLUDED_NUMERIC_FEATURES = {TARGET, *CATEGORICAL_FEATURES}
-
+# 去除掉目標變數和類別特徵，剩下的就是數值特徵了
 
 def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
@@ -95,6 +95,7 @@ def build_models(numeric_features: list[str]) -> dict[str, Pipeline]:
         "Random Forest": tree_pipe(
             numeric_features,
             RandomForestRegressor(n_estimators=400, random_state=42, n_jobs=1),
+            # 找論文說明最佳參數
         ),
         "XGBoost": tree_pipe(
             numeric_features,
@@ -111,12 +112,12 @@ def build_models(numeric_features: list[str]) -> dict[str, Pipeline]:
         ),
     }
 
-
+# 值越小預測越精準 對稱百分比誤差
 def smape(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     denom = np.abs(y_true) + np.abs(y_pred) + EPSILON
     return float(np.mean(200.0 * np.abs(y_true - y_pred) / denom))
-
-
+    
+# smape 的保護機制
 def epsilon_mape(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     denom = np.maximum(np.abs(y_true), EPSILON)
     return float(np.mean(100.0 * np.abs(y_true - y_pred) / denom))
@@ -168,19 +169,22 @@ def plot_best_scatter(actual: np.ndarray, predicted: np.ndarray, model_name: str
 def main() -> None:
     OUTDIR.mkdir(parents=True, exist_ok=True)
 
-    train_raw, valid_raw = load_frames()
-    numeric_features = get_numeric_features(train_raw)
-    train = clean_frame(train_raw, numeric_features)
-    valid = clean_frame(valid_raw, numeric_features)
-
-    xtr = train[numeric_features + CATEGORICAL_FEATURES].copy()
+    train_raw, valid_raw = load_frames() # 切分训练集和验证集
+    numeric_features = get_numeric_features(train_raw) # 取特徵 (查是否有數值轉換)
+    train = clean_frame(train_raw, numeric_features) # 清洗数据，去掉缺失值
+    valid = clean_frame(valid_raw, numeric_features) # 驗證數據 去掉缺失值
+    
+    xtr = train[numeric_features + CATEGORICAL_FEATURES].copy() # 取出特征列，准备训练数据
     xva = valid[numeric_features + CATEGORICAL_FEATURES].copy()
-    ytr = train[TARGET].to_numpy()
+    print(f"train rows: {train}, valid rows: {valid} xtr shape: {xtr.columns.tolist()}, xva shape: {xva.columns.tolist()}")
+    ytr = train[TARGET].to_numpy() # 取出目标变量，转换为numpy数组
     yva = valid[TARGET].to_numpy()
 
     rows = []
     predictions = {}
+
     for name, pipe in build_models(numeric_features).items():
+        print(name)
         pipe.fit(xtr, ytr)
         pred = pipe.predict(xva)
         predictions[name] = pred
@@ -189,10 +193,12 @@ def main() -> None:
                 "model": name,
                 "train_r2": float(r2_score(ytr, pipe.predict(xtr))),
                 **metrics_for(yva, pred),
+                # 把字典裡面的值展開放進去
             }
         )
 
     results = pd.DataFrame(rows).sort_values("r2", ascending=False).reset_index(drop=True)
+    # index rewirte to 0,1,2... based on r2 ranking
     results.to_csv(OUTDIR / "model_comparison.csv", index=False)
 
     best_model = results.iloc[0]["model"]
@@ -226,6 +232,7 @@ def main() -> None:
         "best_model": best_model,
         "results": results.to_dict(orient="records"),
     }
+
     (OUTDIR / "metrics.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
     plot_comparison(results)
