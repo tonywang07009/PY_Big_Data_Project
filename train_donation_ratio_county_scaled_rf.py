@@ -28,7 +28,7 @@ TARGET = "donation_ratio"
 EPSILON = 1e-6
 
 CATEGORICAL_FEATURES = ["county_label", "industry_label", "carrier_type_label"]
-EXCLUDED_NUMERIC_FEATURES = {TARGET, *CATEGORICAL_FEATURES, "donation_count", "donation_amount"}
+EXCLUDED_NUMERIC_FEATURES = {TARGET, *CATEGORICAL_FEATURES}
 
 
 def build_model() -> RandomForestRegressor:

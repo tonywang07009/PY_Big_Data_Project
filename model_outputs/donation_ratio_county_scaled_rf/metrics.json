@@ -1,8 +1,8 @@
 {
   "pipeline": "county_scaled_rf",
   "target": "donation_ratio",
-  "train_source": "C:\\Users\\plmok\\Documents\\data_mining\\datamingProject\\data\\county_zscore_split\\train_scaled_all_counties.csv",
-  "validation_source": "C:\\Users\\plmok\\Documents\\data_mining\\datamingProject\\data\\county_zscore_split\\test_scaled_all_counties.csv",
+  "train_source": "/Users/tuxinhe/Documents/project_code/Data_minning/final_project/PY_Big_Data_Project/data/county_zscore_split/train_scaled_all_counties.csv",
+  "validation_source": "/Users/tuxinhe/Documents/project_code/Data_minning/final_project/PY_Big_Data_Project/data/county_zscore_split/test_scaled_all_counties.csv",
   "numeric_features": [
     "industry_invoice_count",
     "industry_invoice_amount",
@@ -10,6 +10,7 @@
     "price_income_ratio",
     "total_county_invoice_count",
     "total_county_invoice_amount",
+    "donation_count",
     "year",
     "month_num",
     "month_sin",
@@ -27,6 +28,7 @@
     "price_income_ratio",
     "total_county_invoice_count",
     "total_county_invoice_amount",
+    "donation_count",
     "year",
     "month_num",
     "month_sin",
@@ -158,9 +160,9 @@
   ],
   "train_rows_used": 85769,
   "validation_rows_used": 24604,
-  "rmse": 0.0015982899559331255,
-  "mae": 0.0011756462107885464,
-  "smape": 20.922685815853406,
-  "epsilon_mape": 19.183145279075266,
-  "r2": 0.9145229913844377
+  "rmse": 0.0013957141796644423,
+  "mae": 0.0010025866259603332,
+  "smape": 17.59468103424485,
+  "epsilon_mape": 16.12214856543983,
+  "r2": 0.9348174785922114
 }
