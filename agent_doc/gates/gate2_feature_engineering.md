@@ -2,60 +2,57 @@
 
 ## Purpose
 
-Represent county-level structure, time behavior, and clustering-ready profiles from the preprocessed county-month matrix.
+Add the modeling features required by the current county-scaled `donation_ratio` experiments without changing the train/test split or the county-scaling outputs.
 
-## Current Main Implementation
+## Current Implementation
 
-- Entrypoint: `run_all.py`
-- Main code path:
-  - `src/features.build_county_month()`
-  - `src/clustering.run()`
-  - `src/clustering.run_v2()`
+- Main code paths:
+  - `train_donation_ratio_county_scaled_xgboost.py`
+  - `compare_donation_ratio_county_scaled_models.py`
+  - `train_donation_ratio_county_scaled_year_cv.py`
 
-## Current Feature Contracts
+## Current Feature Logic
 
-- Main regression target in the formal project pipeline:
-  - `donation_ratio`
-- Main engineered numeric features include:
-  - `log_total_count`
-  - `log_total_amount`
-  - `avg_invoice_value`
-  - `carrier_usage_ratio`
-  - `n_active_industries`
-  - `industry_hhi`
-  - `donation_seasonal`
-  - `month_sin`
-  - `month_cos`
-  - `donation_ratio_lag1`
-  - `donation_ratio_lag2`
-  - `donation_ratio_lag3`
-  - `donation_ratio_roll3`
-- Main categorical feature:
-  - `county_type`
+### Base inputs from preprocessing
 
-## Current Clustering Workflows
+- `industry_invoice_count`
+- `industry_invoice_amount`
+- `housing_burden`
+- `price_income_ratio`
+- `total_county_invoice_count`
+- `total_county_invoice_amount`
+- `donation_count`
+- `industry_label`
+- `carrier_type_label`
+- `county_label`
+- `year`
 
-### Legacy clustering
+### Added time features
 
-- Entry: `src/clustering.run()`
-- Uses county mean profiles.
-- Produces:
-  - `model_outputs/cluster_assignments.csv`
-  - `model_outputs/clustering_pca.png`
-  - `model_outputs/clustering_elbow_silhouette.png`
-  - `model_outputs/clustering_metrics.json`
+- `month_num`
+- `month_sin`
+- `month_cos`
 
-### Representative-space clustering
+### Modeling feature groups
 
-- Entry: `src/clustering.run_v2()`
-- Uses county representative features built from profile mean and std.
-- Produces:
-  - `model_outputs/county_cluster_v2.csv`
-  - `model_outputs/county_month_pca_points_v2.csv`
-  - grouped PCA figures
-  - `model_outputs/clustering_v2_metrics.json`
+- Numeric features:
+  - all numeric columns except `donation_ratio` and categorical label columns
+- Categorical features:
+  - `county_label`
+  - `industry_label`
+  - `carrier_type_label`
+
+## Current Processing Role
+
+- `train_donation_ratio_county_scaled_xgboost.py` and `compare_donation_ratio_county_scaled_models.py`
+  - read the county-scaled combined CSVs
+  - add cyclic month features
+  - one-hot encode categorical labels during model preparation
+- `train_donation_ratio_county_scaled_year_cv.py`
+  - rebuild the same feature contract inside each rolling fold
+  - recompute county-level scaling from raw data per fold before encoding
 
 ## Current Status
 
 - Implemented and active.
-- Gate 2 in this repository covers both engineered feature creation and county clustering outputs.
+- Clustering-oriented feature engineering is now legacy relative to the current results path.

@@ -2,17 +2,29 @@
 
 ## Purpose
 
-Train the formal donation-ratio models for the scoped county-month matrix and compare candidate regressors under a fixed time-based split.
+Train the current `donation_ratio` models on the county-scaled train/test datasets and compare multiple regressors on the exact same data split.
 
-## Current Main Implementation
+## Current Implementations
 
-- Entrypoint: `run_all.py`
-- Main code path:
-  - `src/model.run()`
-- Train policy:
-  - `year <= 2022`
-- Test policy:
-  - `year >= 2023`
+### Single-model XGBoost path
+
+- Script:
+  - `train_donation_ratio_county_scaled_xgboost.py`
+- Input:
+  - `data/county_zscore_split/train_scaled_all_counties.csv`
+  - `data/county_zscore_split/test_scaled_all_counties.csv`
+- Target:
+  - `donation_ratio`
+- Output root:
+  - `model_outputs/donation_ratio_county_scaled_xgboost/`
+
+### Multi-model comparison path
+
+- Script:
+  - `compare_donation_ratio_county_scaled_models.py`
+- Same input data and target as above
+- Output root:
+  - `model_outputs/donation_ratio_county_scaled_model_comparison/`
 
 ## Current Model Set
 
@@ -24,43 +36,28 @@ Train the formal donation-ratio models for the scoped county-month matrix and co
 
 ## Current Build Flow
 
-1. Drop rows missing required feature columns.
-2. Split train/test by year.
-3. Apply:
-   - z-score scaling + one-hot encoding for linear models
-   - passthrough numeric features + one-hot encoding for tree models
-4. Train all candidate models.
-5. Compare test RMSE and test R2.
-6. Select the best model.
-7. Export:
-   - model comparison table
-   - comparison plot
-   - predicted-vs-actual scatter for the best model
-   - Ridge coefficients
-   - priority scores
+1. Load the already-scaled train/test CSVs.
+2. Add `month_num`, `month_sin`, and `month_cos`.
+3. Separate numeric and categorical feature groups.
+4. Use:
+   - standardized numeric + one-hot categorical preprocessing for linear models
+   - passthrough numeric + one-hot categorical preprocessing for tree models
+5. Fit each model on the same train set.
+6. Predict on the same test set.
+7. Rank models by validation R2.
 
-## Current Main Output Artifacts
+## Current Output Artifacts
 
-- `model_outputs/metrics/model_comparison.csv`
-- `model_outputs/metrics/model_comparison.png`
-- `model_outputs/metrics/prediction_scatter.png`
-- `model_outputs/metrics/ridge_coefficients.csv`
-- `model_outputs/priority_scores.csv`
-- `model_outputs/gate3_verdict.json`
-
-## Supplementary Workflow Added In This Chat
-
-- Script: `train_donation_ratio_county_scaled_xgboost.py`
-- Purpose:
-  - train XGBoost on `data/county_zscore_split/train_scaled_all_counties.csv`
-  - validate on `data/county_zscore_split/test_scaled_all_counties.csv`
-  - use `donation_ratio` as target
-- Output root:
-  - `model_outputs/donation_ratio_county_scaled_xgboost/`
-
-This branch is an auxiliary modeling path and does not replace the formal `run_all.py` model-comparison stage.
+- Single-model path:
+  - `model_outputs/donation_ratio_county_scaled_xgboost/metrics.json`
+  - `model_outputs/donation_ratio_county_scaled_xgboost/validation_predictions.csv`
+  - `model_outputs/donation_ratio_county_scaled_xgboost/xgboost_model.json`
+- Multi-model path:
+  - `model_outputs/donation_ratio_county_scaled_model_comparison/model_comparison.csv`
+  - `model_outputs/donation_ratio_county_scaled_model_comparison/metrics.json`
+  - `model_outputs/donation_ratio_county_scaled_model_comparison/validation_predictions.csv`
 
 ## Current Status
 
 - Implemented and active.
-- The formal delivery still treats `src/model.py` as the canonical Gate 3 path.
+- The current best-performing model on this exact split is now determined by the comparison script, not by `run_all.py`.

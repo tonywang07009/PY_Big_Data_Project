@@ -2,32 +2,38 @@
 
 ## Purpose
 
-Confirm that the encoded source dataset is readable and that the requested formal county scope can actually be supported by the raw data.
+Confirm that the raw encoded dataset and the generated county-scaled datasets are readable before any preprocessing or model execution starts.
 
 ## Current Implementation
 
-- Entrypoint: `run_all.py`
-- Main code path:
-  - `pd.read_csv(..., usecols=["county_label"])`
-  - `src/project_config.scope_readiness()`
-  - `src/final_delivery.write_gate_verdicts()`
-- The old `pipeline_tools/` discovery/profiling path is retired and is no longer part of the current executable repository structure.
+- Raw source:
+  - `data/raw/encoded_ml_dataset.csv`
+- Derived inputs checked by downstream scripts:
+  - `data/county_zscore_split/train_scaled_all_counties.csv`
+  - `data/county_zscore_split/test_scaled_all_counties.csv`
+- Main code paths that depend on this gate:
+  - `split_scale_by_county.py`
+  - `train_donation_ratio_county_scaled_xgboost.py`
+  - `train_donation_ratio_county_scaled_year_cv.py`
+  - `compare_donation_ratio_county_scaled_models.py`
 
 ## What This Gate Checks
 
-- `data/raw/encoded_ml_dataset.csv` can be read.
-- Raw county labels exist and can be compared against the formal scope.
-- Missing requested counties are surfaced explicitly instead of being imputed.
+- The raw encoded CSV can be read.
+- `month` and `county_label` exist in the raw data.
+- The county-scaled train/test CSVs exist after preprocessing.
+- The current train/test split is year-based:
+  - train: `year < 2024`
+  - test: `year >= 2024`
 
-## Current Output Artifacts
+## Current Output Evidence
 
-- `model_outputs/gate0_verdict.json`
-- readiness evidence embedded into:
-  - `reports/final_project_report.md`
-  - `reports/tour_guide.md`
-  - `reports/dashboard.html`
+- `data/county_zscore_split/train_scaled_all_counties.csv`
+- `data/county_zscore_split/test_scaled_all_counties.csv`
+- `data/county_zscore_split/by_county/`
+- `data/county_zscore_split/scalers/`
 
 ## Current Status
 
-- Status is currently **CONDITIONAL** in the generated verdicts because the requested formal scope includes counties that are not present in the raw mapping/data.
-- This gate is a scope-coverage audit, not a generic schema-profiler workflow.
+- Implemented and active through the county-scaled `donation_ratio` workflow.
+- No separate `gate0_verdict.json` generator exists in the current experimental path.
