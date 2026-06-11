@@ -2,61 +2,46 @@
 
 ## Purpose
 
-Transform the encoded raw invoice rows into stable, time-aware modeling inputs without crossing the dataset’s coverage gap or leaking future information.
+Prepare a county-level, year-aware train/test split and standardize numeric features per county without leaking test information into the training fit.
 
-## Current Main Implementation
+## Current Implementation
 
-- Entrypoint: `run_all.py`
-- Main code path:
-  - `src/features.build_county_month()`
-  - `src/project_config.filter_scope_counties()`
-- Primary output:
-  - `model_outputs/county_month_matrix.csv`
-
-## Current Processing Flow
-
-1. Read `data/raw/encoded_ml_dataset.csv`.
-2. Group raw rows to county-month level.
-3. Preserve county-month constant indicators such as:
-   - `housing_burden`
-   - `price_income_ratio`
-   - `total_county_invoice_count`
-   - `total_county_invoice_amount`
-   - `donation_count`
-   - `donation_ratio`
-4. Build structural features from row-level invoice behavior:
-   - carrier usage ratio
-   - active industry count
-   - industry HHI
-5. Add time fields and cyclic month features.
-6. Fit STL per county for seasonal/trend components.
-7. Join lag features by calendar date so lags do not silently cross the 2020 to 2022 coverage gap.
-8. Filter to formal in-scope counties before downstream clustering and modeling.
-
-## Supplementary Workflow Added In This Chat
-
-- Standalone script: `split_scale_by_county.py`
-- Purpose:
-  - derive `year` from `month`
-  - split rows into `year < 2024` train and `year >= 2024` test
-  - fit one `StandardScaler` per `county_label`
-  - save scaled combined datasets plus per-county CSVs and scaler files
+- Entrypoint:
+  - `split_scale_by_county.py`
+- Input:
+  - `data/raw/encoded_ml_dataset.csv`
 - Output root:
   - `data/county_zscore_split/`
 
-This supplementary workflow is not a dependency of `run_all.py`, but it is now part of the repository’s preprocessing toolbox.
+## Current Processing Flow
+
+1. Read the raw encoded dataset.
+2. Derive `date` and `year` from the existing `month` column.
+3. Split rows into:
+   - train: `year < 2024`
+   - test: `year >= 2024`
+4. Group both splits by `county_label`.
+5. Detect numeric columns to scale while excluding:
+   - `month`
+   - `date`
+   - `year`
+   - `county_label`
+   - `industry_label`
+   - `carrier_type_label`
+   - `donation_ratio`
+6. Fit one `StandardScaler` per county on the train group only.
+7. Transform the matching test county with the already-fitted scaler.
+8. Save combined datasets, per-county datasets, and per-county scaler files.
 
 ## Current Output Artifacts
 
-- Main pipeline:
-  - `model_outputs/county_month_matrix.csv`
-- Supplementary county-scaling workflow:
-  - `data/county_zscore_split/train_scaled_all_counties.csv`
-  - `data/county_zscore_split/test_scaled_all_counties.csv`
-  - `data/county_zscore_split/by_county/`
-  - `data/county_zscore_split/scalers/`
+- `data/county_zscore_split/train_scaled_all_counties.csv`
+- `data/county_zscore_split/test_scaled_all_counties.csv`
+- `data/county_zscore_split/by_county/county_<label>/train_scaled.csv`
+- `data/county_zscore_split/by_county/county_<label>/test_scaled.csv`
+- `data/county_zscore_split/scalers/county_<label>_standard_scaler.joblib`
 
 ## Current Status
 
 - Implemented and active.
-- The main pipeline and the county-scaling branch are intentionally separate.
+- This is the actual preprocessing entrypoint for the current repository results.

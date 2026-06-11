@@ -2,37 +2,39 @@
 
 ## Purpose
 
-Convert model outputs into reviewable deliverables, operational priority scores, and formal gate verdict artifacts.
+Package the current county-scaled `donation_ratio` results into stable machine-readable outputs and reviewable figures for comparison and inspection.
 
-## Current Main Implementation
+## Current Delivery Scope
 
-- Entrypoint: `run_all.py`
-- Main code path:
-  - `src/final_delivery.write_all()`
-- Sub-components:
-  - `write_gate_verdicts()`
-  - `write_final_report()`
-  - `write_dashboard()`
-  - `write_tour_guide()`
+The active delivery scope is no longer the old report/dashboard stack. The current deliverables are the generated model result folders under `model_outputs/`.
 
-## Current Delivery Flow
+## Current Delivery Bundles
 
-1. Read upstream clustering, modeling, SHAP, and readiness results.
-2. Write `gate0` through `gate6` verdict JSON files.
-3. Write the final Markdown report.
-4. Write the static HTML dashboard.
-5. Write the Tour Guide document.
-6. Persist priority scores and reference them from the human-facing outputs.
+### County-scaled XGBoost bundle
 
-## Current Main Output Artifacts
+- `model_outputs/donation_ratio_county_scaled_xgboost/metrics.json`
+- `model_outputs/donation_ratio_county_scaled_xgboost/validation_predictions.csv`
+- `model_outputs/donation_ratio_county_scaled_xgboost/performance_result.png`
+- `model_outputs/donation_ratio_county_scaled_xgboost/feature_importance.csv`
+- `model_outputs/donation_ratio_county_scaled_xgboost/feature_importance.png`
+- `model_outputs/donation_ratio_county_scaled_xgboost/xgboost_model.json`
 
-- `model_outputs/priority_scores.csv`
-- `model_outputs/gate0_verdict.json` through `model_outputs/gate6_verdict.json`
-- `reports/final_project_report.md`
-- `reports/dashboard.html`
-- `reports/tour_guide.md`
+### County-scaled multi-model comparison bundle
+
+- `model_outputs/donation_ratio_county_scaled_model_comparison/model_comparison.csv`
+- `model_outputs/donation_ratio_county_scaled_model_comparison/model_comparison.png`
+- `model_outputs/donation_ratio_county_scaled_model_comparison/prediction_scatter.png`
+- `model_outputs/donation_ratio_county_scaled_model_comparison/validation_predictions.csv`
+- `model_outputs/donation_ratio_county_scaled_model_comparison/metrics.json`
+
+### County-scaled rolling year-CV bundle
+
+- `model_outputs/donation_ratio_county_scaled_year_cv/metrics_by_fold.csv`
+- `model_outputs/donation_ratio_county_scaled_year_cv/metrics_summary.json`
+- `model_outputs/donation_ratio_county_scaled_year_cv/validation_predictions_by_fold.csv`
+- `model_outputs/donation_ratio_county_scaled_year_cv/performance_result.png`
 
 ## Current Status
 
 - Implemented and active.
-- Current final delivery is still **CONDITIONAL** when requested scope counties are missing from the source data.
+- Current delivery is centered on reproducible experiment folders, not on a single final report/dashboard package.

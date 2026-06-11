@@ -4,28 +4,24 @@ This diagram reflects the current repository structure and excludes Gate 0 by de
 
 ```mermaid
 flowchart TD
-    A[data/raw/encoded_ml_dataset.csv] --> B[Gate 1<br/>src/features.py]
-    B --> C[model_outputs/county_month_matrix.csv]
-    C --> D[Gate 2<br/>src/clustering.py]
-    C --> E[Gate 3<br/>src/model.py]
-    C --> F[Gate 5<br/>src/shap_analysis.py]
-    D --> G[cluster_assignments.csv<br/>county_cluster_v2.csv<br/>PCA figures]
-    E --> H[model comparison<br/>prediction scatter<br/>priority scores]
-    F --> I[shap_importance.csv<br/>shap_summary.png]
-    G --> J[Gate 6<br/>src/final_delivery.py]
-    H --> J
-    I --> J
-    E --> K[Gate 4<br/>time-based split evidence]
-    K --> J
+    A[data/raw/encoded_ml_dataset.csv] --> B[Gate 1<br/>split_scale_by_county.py]
+    B --> C[data/county_zscore_split/train_scaled_all_counties.csv]
+    B --> D[data/county_zscore_split/test_scaled_all_counties.csv]
+    B --> E[data/county_zscore_split/by_county and scalers]
 
-    A --> L[Supplementary preprocessing<br/>split_scale_by_county.py]
-    L --> M[data/county_zscore_split/]
-    M --> N[Supplementary model<br/>train_donation_ratio_county_scaled_xgboost.py]
-    M --> O[Supplementary rolling CV<br/>train_donation_ratio_county_scaled_year_cv.py]
-    N --> P[model_outputs/donation_ratio_county_scaled_xgboost/]
-    O --> Q[model_outputs/donation_ratio_county_scaled_year_cv/]
+    C --> F[Gate 2<br/>feature preparation in modeling scripts]
+    D --> F
 
-    J --> R[reports/final_project_report.md]
-    J --> S[reports/dashboard.html]
-    J --> T[reports/tour_guide.md]
+    F --> G[Gate 3<br/>train_donation_ratio_county_scaled_xgboost.py]
+    F --> H[Gate 3<br/>compare_donation_ratio_county_scaled_models.py]
+    A --> I[Gate 4<br/>train_donation_ratio_county_scaled_year_cv.py]
+
+    G --> J[model_outputs/donation_ratio_county_scaled_xgboost/]
+    H --> K[model_outputs/donation_ratio_county_scaled_model_comparison/]
+    I --> L[model_outputs/donation_ratio_county_scaled_year_cv/]
+
+    J --> M[Gate 5<br/>feature importance CSV and PNG]
+    J --> N[Gate 6<br/>XGBoost result bundle]
+    K --> O[Gate 6<br/>model comparison result bundle]
+    L --> P[Gate 6<br/>rolling CV result bundle]
 ```

@@ -2,54 +2,55 @@
 
 ## Purpose
 
-Validate that the model evaluation policy is time-aware, leakage-resistant, and explicit about which years belong to training and which belong to future evaluation.
+Evaluate whether the county-scaled `donation_ratio` models generalize under both the fixed 2024 holdout and the rolling year-validation workflow.
 
-## Current Main Implementation
+## Current Validation Paths
 
-- Entrypoint: `run_all.py`
-- Main code path:
-  - `src/model.split()`
-  - gate evidence assembled by `src/final_delivery.write_gate_verdicts()`
+### Fixed train/test validation
 
-## Current Formal Validation Policy
+- Used by:
+  - `train_donation_ratio_county_scaled_xgboost.py`
+  - `compare_donation_ratio_county_scaled_models.py`
+- Policy:
+  - train: `year < 2024`
+  - test: `year >= 2024`
 
-- No shuffling.
-- Train on `2019-2022`.
-- Test on `2023-2024`.
-- Use RMSE and R2 as the primary formal comparison metrics.
+### Rolling year validation
 
-## Current Main Output Artifacts
+- Used by:
+  - `train_donation_ratio_county_scaled_year_cv.py`
+- Policy:
+  - for each validation year, train on all earlier years
+  - recompute county-level scaling inside the fold
 
-- `model_outputs/gate4_verdict.json`
-- evaluation evidence embedded in:
-  - `model_outputs/metrics/model_comparison.csv`
-  - `model_outputs/metrics/model_results.json`
-  - `reports/final_project_report.md`
-  - `reports/tour_guide.md`
+## Current Fold Sequence
 
-## Supplementary Validation Workflow Added In This Chat
+- `2020`
+- `2022`
+- `2023`
+- `2024`
 
-- Script: `train_donation_ratio_county_scaled_year_cv.py`
-- Purpose:
-  - perform rolling year validation for the county-scaled `donation_ratio` workflow
-  - recompute county-level scaling separately inside each fold
-  - avoid future leakage by fitting each county scaler only on fold-train years
-- Validation folds currently produced:
-  - `2020`
-  - `2022`
-  - `2023`
-  - `2024`
-- Output root:
-  - `model_outputs/donation_ratio_county_scaled_year_cv/`
+## Current Validation Metrics
 
-## Current Supplementary Output Artifacts
+- `RMSE`
+- `MAE`
+- `sMAPE`
+- `epsilon-MAPE`
+- `R2`
 
-- `model_outputs/donation_ratio_county_scaled_year_cv/metrics_by_fold.csv`
-- `model_outputs/donation_ratio_county_scaled_year_cv/metrics_summary.json`
-- `model_outputs/donation_ratio_county_scaled_year_cv/validation_predictions_by_fold.csv`
-- `model_outputs/donation_ratio_county_scaled_year_cv/performance_result.png`
+## Current Output Artifacts
+
+- Fixed holdout:
+  - `model_outputs/donation_ratio_county_scaled_xgboost/performance_result.png`
+  - `model_outputs/donation_ratio_county_scaled_model_comparison/model_comparison.png`
+  - `model_outputs/donation_ratio_county_scaled_model_comparison/prediction_scatter.png`
+- Rolling validation:
+  - `model_outputs/donation_ratio_county_scaled_year_cv/metrics_by_fold.csv`
+  - `model_outputs/donation_ratio_county_scaled_year_cv/metrics_summary.json`
+  - `model_outputs/donation_ratio_county_scaled_year_cv/validation_predictions_by_fold.csv`
+  - `model_outputs/donation_ratio_county_scaled_year_cv/performance_result.png`
 
 ## Current Status
 
-- The formal project pipeline uses one fixed future holdout.
-- The rolling year CV workflow now exists as an additional validation branch for the county-scaled `donation_ratio` experiment.
+- Implemented and active.
+- The current validation story is centered on the county-scaled `donation_ratio` branch, not the retired formal project pipeline.
