@@ -1,0 +1,38 @@
+{
+  "pipeline": "raw_row_xgboost_walk_forward",
+  "target": "donation_count",
+  "walk_forward_design": "yearly expanding",
+  "standardization_policy": "numeric features per county_label, train fold only",
+  "folds": [
+    {
+      "fold": "fold_2023",
+      "train_policy": "year < 2023",
+      "validation_policy": "year == 2023",
+      "train_rows_used": 47346,
+      "validation_rows_used": 23856,
+      "rmse": 579959.4826123632,
+      "mae": 546757.5625,
+      "smape": 127.7901899190318,
+      "epsilon_mape": 1430.4544915011793,
+      "r2": 0.6967363357543945
+    },
+    {
+      "fold": "fold_2024",
+      "train_policy": "year < 2024",
+      "validation_policy": "year == 2024",
+      "train_rows_used": 71202,
+      "validation_rows_used": 24604,
+      "rmse": 809647.1006061839,
+      "mae": 771150.0,
+      "smape": 127.77587125893454,
+      "epsilon_mape": 1354.5970602904456,
+      "r2": 0.45675891637802124
+    }
+  ],
+  "mean_rmse": 694803.2916092735,
+  "mean_mae": 658953.78125,
+  "mean_smape": 127.78303058898317,
+  "mean_epsilon_mape": 1392.5257758958123,
+  "mean_r2": 0.5767476260662079,
+  "selected_root_fold": "fold_2024"
+}

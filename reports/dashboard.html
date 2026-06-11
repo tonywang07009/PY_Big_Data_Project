@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MecDonate Dashboard</title>
+  <title>MecDonate Gate 7 Dashboard</title>
   <style>
     :root {
       color-scheme: light;
@@ -13,7 +13,7 @@
       --paper: #f7f8fa;
       --panel: #ffffff;
       --blue: #1b5c8c;
-      --green: #27735f;
+      --green: #28724f;
       --red: #a33c2f;
     }
     * { box-sizing: border-box; }
@@ -29,12 +29,11 @@
       background: #ffffff;
       border-bottom: 1px solid var(--line);
     }
-    h1, h2, h3 { margin: 0; letter-spacing: 0; }
+    h1, h2 { margin: 0; letter-spacing: 0; }
     h1 { font-size: 30px; }
     h2 { font-size: 20px; margin-bottom: 12px; }
-    h3 { font-size: 15px; margin-bottom: 8px; }
     main { max-width: 1220px; margin: 0 auto; padding: 24px 20px 40px; }
-    .subtitle { color: var(--muted); margin-top: 8px; max-width: 860px; }
+    .subtitle { color: var(--muted); margin-top: 8px; max-width: 920px; }
     .grid { display: grid; gap: 16px; }
     .metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 20px; }
     .two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -43,25 +42,17 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 16px;
+      overflow-x: auto;
     }
     .metric-value { font-size: 28px; font-weight: 700; color: var(--blue); }
     .metric-label { color: var(--muted); font-size: 13px; margin-top: 4px; }
-    .status {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 6px;
-      color: #ffffff;
-      background: var(--green);
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .status.conditional { background: var(--red); }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th, td { border-bottom: 1px solid var(--line); padding: 8px 6px; text-align: left; vertical-align: top; }
     th { color: var(--muted); font-weight: 700; }
-    img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: #ffffff; }
+    .pass { color: var(--green); font-weight: 700; }
+    .warning { color: var(--red); font-weight: 700; }
     .section { margin-top: 20px; }
-    .note { color: var(--muted); font-size: 14px; }
+    img.chart { display: block; width: 100%; max-width: 1120px; height: auto; }
     @media (max-width: 900px) {
       .metrics, .two { grid-template-columns: 1fr; }
       header { padding: 22px 20px 16px; }
@@ -70,83 +61,50 @@
 </head>
 <body>
   <header>
-    <h1>MecDonate Final Dashboard</h1>
-    <div class="subtitle">Scope-limited county donation ratio prediction, priority scoring, clustering, model validation, and interpretability summary.</div>
+    <h1>MecDonate Gate 7 Dashboard</h1>
+    <div class="subtitle">Formal county-month donation_count ensemble with monthly expanding walk-forward validation, log-XGBoost, county calibration, and historical baseline blending.</div>
   </header>
   <main>
     <section class="grid metrics">
       <div class="panel">
-        <div class="metric-value">5/6</div>
-        <div class="metric-label">scope counties available</div>
+        <div class="metric-value">PASS</div>
+        <div class="metric-label">Gate 7 verdict</div>
       </div>
       <div class="panel">
-        <div class="metric-value">Ridge</div>
-        <div class="metric-label">best test model</div>
+        <div class="metric-value">15.74%</div>
+        <div class="metric-label">mean monthly sMAPE</div>
       </div>
       <div class="panel">
-        <div class="metric-value">0.919</div>
-        <div class="metric-label">test R2</div>
+        <div class="metric-value">6.60%</div>
+        <div class="metric-label">mean county abs pct diff</div>
       </div>
       <div class="panel">
-        <div class="metric-value">120</div>
-        <div class="metric-label">priority rows</div>
+        <div class="metric-value">24</div>
+        <div class="metric-label">monthly folds</div>
       </div>
     </section>
-
     <section class="panel">
-      <h2>Data Readiness</h2>
-      <p><span class="status conditional">CONDITIONAL</span></p>
-      <p class="note">Missing requested county data: 連江縣. Formal modeling uses only available in-scope counties and does not add substitute data.</p>
+      <h2>Largest County Error</h2>
+      <p class="warning">高雄市: diff -1129697.7038 (-7.6126%)</p>
     </section>
-
-    <section class="section grid two">
-      <div class="panel">
-        <h2>Priority Scores</h2>
-        <table><thead><tr><th>rank</th><th>county_name</th><th>month</th><th>predicted_donation_ratio</th><th>invoice_count</th><th>expected_donated_count</th><th>normalized_priority_score</th></tr></thead><tbody><tr><td>1</td><td>台北市</td><td>2024-05</td><td>0.0242</td><td>178,599,146</td><td>4323073.7100</td><td>1.0000</td></tr><tr><td>2</td><td>台北市</td><td>2024-07</td><td>0.0230</td><td>179,297,688</td><td>4119145.0423</td><td>0.9527</td></tr><tr><td>3</td><td>台北市</td><td>2024-11</td><td>0.0221</td><td>185,696,567</td><td>4109742.1368</td><td>0.9505</td></tr><tr><td>4</td><td>台北市</td><td>2024-06</td><td>0.0236</td><td>174,431,178</td><td>4108210.2147</td><td>0.9502</td></tr><tr><td>5</td><td>台北市</td><td>2024-08</td><td>0.0224</td><td>183,443,397</td><td>4108094.2107</td><td>0.9502</td></tr><tr><td>6</td><td>台北市</td><td>2023-05</td><td>0.0237</td><td>168,545,559</td><td>3994290.3600</td><td>0.9238</td></tr><tr><td>7</td><td>台北市</td><td>2024-12</td><td>0.0213</td><td>186,912,671</td><td>3985178.2825</td><td>0.9216</td></tr><tr><td>8</td><td>台北市</td><td>2023-07</td><td>0.0229</td><td>172,601,473</td><td>3960142.2642</td><td>0.9158</td></tr><tr><td>9</td><td>台北市</td><td>2024-04</td><td>0.0233</td><td>169,902,851</td><td>3955955.8349</td><td>0.9149</td></tr><tr><td>10</td><td>台北市</td><td>2023-08</td><td>0.0226</td><td>174,927,157</td><td>3948332.6812</td><td>0.9131</td></tr><tr><td>11</td><td>台北市</td><td>2024-03</td><td>0.0225</td><td>175,684,907</td><td>3947824.9380</td><td>0.9130</td></tr><tr><td>12</td><td>台北市</td><td>2024-10</td><td>0.0221</td><td>176,730,529</td><td>3907875.8928</td><td>0.9037</td></tr></tbody></table>
-      </div>
-      <div class="panel">
-        <h2>Model Metrics</h2>
-        <table><thead><tr><th>model</th><th>test_RMSE</th><th>test_R2</th><th>train_R2</th></tr></thead><tbody><tr><td>Ridge</td><td>0.0022</td><td>0.9186</td><td>0.9437</td></tr><tr><td>Lasso</td><td>0.0027</td><td>0.8756</td><td>0.9305</td></tr><tr><td>Linear Regression</td><td>0.0036</td><td>0.7725</td><td>0.9545</td></tr><tr><td>XGBoost</td><td>0.0056</td><td>0.4488</td><td>0.9974</td></tr><tr><td>Random Forest</td><td>0.0067</td><td>0.2229</td><td>0.9868</td></tr></tbody></table>
-      </div>
-    </section>
-
-    <section class="section grid two">
-      <div class="panel">
-        <h2>Clustering</h2>
-        <p class="note">Best K: 3</p>
-        <table><thead><tr><th>county_label</th><th>county_english_name</th><th>county_name</th><th>cluster</th><th>pc1</th><th>pc2</th></tr></thead><tbody><tr><td>1</td><td>Taichung</td><td>台中市</td><td>2</td><td>0.3017</td><td>1.6500</td></tr><tr><td>2</td><td>Taipei</td><td>台北市</td><td>0</td><td>4.3788</td><td>-1.1928</td></tr><tr><td>15</td><td>Hualien</td><td>花蓮縣</td><td>1</td><td>-2.5040</td><td>-1.5328</td></tr><tr><td>17</td><td>Yunlin</td><td>雲林縣</td><td>1</td><td>-2.0590</td><td>-0.5220</td></tr><tr><td>18</td><td>Kaohsiung</td><td>高雄市</td><td>2</td><td>-0.1174</td><td>1.5975</td></tr></tbody></table>
-      </div>
-      <div class="panel">
-        <h2>Cluster PCA</h2>
-        <img src="../model_outputs/clustering_pca.png" alt="County cluster PCA plot">
-      </div>
-    </section>
-
-    <section class="section grid two">
-      <div class="panel">
-        <h2>Ridge Explanation</h2>
-        <table><thead><tr><th>feature</th><th>standardized_coefficient</th><th>abs_standardized_coefficient</th></tr></thead><tbody><tr><td>donation_ratio_lag3</td><td>0.0029</td><td>0.0029</td></tr><tr><td>avg_invoice_value</td><td>-0.0020</td><td>0.0020</td></tr><tr><td>carrier_usage_ratio</td><td>0.0012</td><td>0.0012</td></tr><tr><td>donation_ratio_roll3</td><td>0.0010</td><td>0.0010</td></tr><tr><td>donation_seasonal</td><td>0.0009</td><td>0.0009</td></tr><tr><td>log_total_count</td><td>0.0007</td><td>0.0007</td></tr><tr><td>industry_hhi</td><td>-0.0005</td><td>0.0005</td></tr><tr><td>month_cos</td><td>-0.0004</td><td>0.0004</td></tr><tr><td>county_type=remote</td><td>-0.0004</td><td>0.0004</td></tr><tr><td>county_type=metropolitan</td><td>0.0003</td><td>0.0003</td></tr></tbody></table>
-      </div>
-      <div class="panel">
-        <h2>XGBoost SHAP</h2>
-        <table><thead><tr><th>feature</th><th>mean_abs_shap</th></tr></thead><tbody><tr><td>housing_burden</td><td>0.0028</td></tr><tr><td>donation_ratio_lag1</td><td>0.0006</td></tr><tr><td>industry_hhi</td><td>0.0005</td></tr><tr><td>donation_ratio_lag3</td><td>0.0002</td></tr><tr><td>donation_ratio_lag2</td><td>0.0002</td></tr><tr><td>donation_seasonal</td><td>0.0001</td></tr><tr><td>log_total_count</td><td>0.0001</td></tr><tr><td>month_sin</td><td>0.0001</td></tr><tr><td>month_cos</td><td>0.0001</td></tr><tr><td>n_active_industries</td><td>0.0000</td></tr></tbody></table>
-      </div>
-    </section>
-
-    <section class="section grid two">
-      <div class="panel">
-        <h2>Model Comparison Plot</h2>
-        <img src="../model_outputs/metrics/model_comparison.png" alt="Model comparison chart">
-      </div>
-      <div class="panel">
-        <h2>SHAP Summary Plot</h2>
-        <img src="../model_outputs/shap/shap_summary.png" alt="SHAP summary chart">
-      </div>
-    </section>
-
     <section class="section panel">
-      <h2>Data Limitations</h2>
-      <p class="note">The final analysis is scoped to the available project counties in the encoded data. Lienchiang County is documented as a data gap. The train/test split is time based, with train years 2019, 2020, 2022 and test years 2023, 2024. The source data has a coverage gap, so lag features are date-joined and missing cross-gap lags are excluded from training.</p>
+      <h2>Model Comparison</h2>
+      <img class="chart" src="../model_outputs/donation_count_xgboost_ensemble/model_comparison.png" alt="Gate 7 model comparison chart">
+      <table><thead><tr><th>model</th><th>rmse</th><th>mae</th><th>smape</th><th>r2</th></tr></thead><tbody><tr><td>Historical Baseline</td><td>50502.7927</td><td>23113.7442</td><td>10.3243</td><td>0.9959</td></tr><tr><td>Final Ensemble</td><td>71580.0223</td><td>32620.1947</td><td>15.7392</td><td>0.9904</td></tr><tr><td>Calibrated XGBoost</td><td>93718.1415</td><td>42367.1245</td><td>21.9098</td><td>0.9817</td></tr><tr><td>Log-XGBoost</td><td>224452.7557</td><td>85693.8665</td><td>29.8742</td><td>0.8568</td></tr></tbody></table>
+    </section>
+    <section class="section grid two">
+      <div class="panel">
+        <h2>Monthly Walk-Forward Metrics</h2>
+        <table><thead><tr><th>month</th><th>ensemble_rmse</th><th>ensemble_mae</th><th>ensemble_smape</th><th>ensemble_r2</th></tr></thead><tbody><tr><td>2023-01</td><td>194626.0458</td><td>68550.5733</td><td>22.1010</td><td>0.9462</td></tr><tr><td>2023-02</td><td>97021.1751</td><td>32926.0417</td><td>22.4562</td><td>0.9859</td></tr><tr><td>2023-03</td><td>32168.2203</td><td>19598.7404</td><td>17.5425</td><td>0.9988</td></tr><tr><td>2023-04</td><td>216433.5294</td><td>59790.8940</td><td>14.1564</td><td>0.9331</td></tr><tr><td>2023-05</td><td>36436.0182</td><td>23447.2195</td><td>16.7178</td><td>0.9984</td></tr><tr><td>2023-06</td><td>48165.0938</td><td>18280.8950</td><td>4.7856</td><td>0.9970</td></tr><tr><td>2023-07</td><td>35767.5858</td><td>24367.7912</td><td>23.9843</td><td>0.9984</td></tr><tr><td>2023-08</td><td>56607.8606</td><td>25864.8312</td><td>8.6381</td><td>0.9962</td></tr><tr><td>2023-09</td><td>54990.5502</td><td>17921.3785</td><td>8.9767</td><td>0.9960</td></tr><tr><td>2023-10</td><td>23094.2212</td><td>14631.4427</td><td>10.2428</td><td>0.9994</td></tr><tr><td>2023-11</td><td>58354.2824</td><td>24987.1267</td><td>11.1393</td><td>0.9962</td></tr><tr><td>2023-12</td><td>51157.6654</td><td>25239.2047</td><td>14.2992</td><td>0.9970</td></tr><tr><td>2024-01</td><td>137305.7753</td><td>51115.0894</td><td>16.7326</td><td>0.9789</td></tr><tr><td>2024-02</td><td>85584.5047</td><td>31703.6878</td><td>11.5087</td><td>0.9899</td></tr><tr><td>2024-03</td><td>58679.0220</td><td>34619.5699</td><td>20.9399</td><td>0.9961</td></tr><tr><td>2024-04</td><td>27573.5938</td><td>19645.0224</td><td>12.5822</td><td>0.9991</td></tr><tr><td>2024-05</td><td>63784.3268</td><td>40843.5172</td><td>18.1332</td><td>0.9952</td></tr><tr><td>2024-06</td><td>54988.0795</td><td>29412.3364</td><td>8.4726</td><td>0.9965</td></tr><tr><td>2024-07</td><td>58604.8429</td><td>26723.0271</td><td>10.4881</td><td>0.9963</td></tr><tr><td>2024-08</td><td>50711.3295</td><td>29897.7059</td><td>22.5565</td><td>0.9973</td></tr><tr><td>2024-09</td><td>61478.4523</td><td>44126.8974</td><td>25.6180</td><td>0.9954</td></tr><tr><td>2024-10</td><td>50993.2118</td><td>35929.2535</td><td>23.6176</td><td>0.9971</td></tr><tr><td>2024-11</td><td>65401.3817</td><td>32695.6551</td><td>14.9229</td><td>0.9956</td></tr><tr><td>2024-12</td><td>97993.7666</td><td>50566.7729</td><td>17.1291</td><td>0.9901</td></tr></tbody></table>
+      </div>
+      <div class="panel">
+        <h2>Top SHAP Features</h2>
+        <table><thead><tr><th>feature</th><th>mean_abs_shap</th></tr></thead><tbody><tr><td>county_label_2</td><td>0.3449</td></tr><tr><td>donation_count_roll3_max</td><td>0.2725</td></tr><tr><td>county_label_11</td><td>0.2203</td></tr><tr><td>row_count_per_county_month</td><td>0.1767</td></tr><tr><td>county_label_18</td><td>0.1640</td></tr><tr><td>county_label_14</td><td>0.1408</td></tr><tr><td>donation_count_lag1</td><td>0.1340</td></tr><tr><td>county_label_1</td><td>0.1267</td></tr><tr><td>month_num</td><td>0.1208</td></tr><tr><td>county_label_4</td><td>0.1026</td></tr><tr><td>donation_count_roll3_min</td><td>0.0871</td></tr><tr><td>county_label_6</td><td>0.0783</td></tr></tbody></table>
+      </div>
+    </section>
+    <section class="section panel">
+      <h2>County Validation Comparison</h2>
+      <table><thead><tr><th>county_label</th><th>county_name</th><th>actual_donation_count</th><th>predicted_donation_count</th><th>count_diff</th><th>pct_diff</th><th>abs_pct_diff</th></tr></thead><tbody><tr><td>18</td><td>高雄市</td><td>14,839,807</td><td>13710109.2962</td><td>-1129697.7038</td><td>-7.6126</td><td>7.6126</td></tr><tr><td>2</td><td>台北市</td><td>97,085,454</td><td>97893684.0903</td><td>808230.0903</td><td>0.8325</td><td>0.8325</td></tr><tr><td>14</td><td>桃園市</td><td>9,407,614</td><td>8835607.9578</td><td>-572006.0422</td><td>-6.0802</td><td>6.0802</td></tr><tr><td>11</td><td>新北市</td><td>31,756,823</td><td>31341897.1727</td><td>-414925.8273</td><td>-1.3066</td><td>1.3066</td></tr><tr><td>3</td><td>台南市</td><td>4,857,047</td><td>4506440.5392</td><td>-350606.4608</td><td>-7.2185</td><td>7.2185</td></tr><tr><td>10</td><td>彰化縣</td><td>2,132,807</td><td>1786537.1461</td><td>-346269.8539</td><td>-16.2354</td><td>16.2354</td></tr><tr><td>1</td><td>台中市</td><td>9,753,670</td><td>9478300.0351</td><td>-275369.9649</td><td>-2.8232</td><td>2.8232</td></tr><tr><td>12</td><td>新竹市</td><td>1,693,257</td><td>1436944.7084</td><td>-256312.2916</td><td>-15.1372</td><td>15.1372</td></tr><tr><td>9</td><td>屏東縣</td><td>1,321,812</td><td>1129230.4585</td><td>-192581.5415</td><td>-14.5695</td><td>14.5695</td></tr><tr><td>7</td><td>基隆市</td><td>2,048,990</td><td>1858033.5685</td><td>-190956.4315</td><td>-9.3195</td><td>9.3195</td></tr><tr><td>13</td><td>新竹縣</td><td>1,863,961</td><td>1704912.2871</td><td>-159048.7129</td><td>-8.5328</td><td>8.5328</td></tr><tr><td>5</td><td>嘉義市</td><td>1,169,869</td><td>1052490.9793</td><td>-117378.0207</td><td>-10.0334</td><td>10.0334</td></tr><tr><td>8</td><td>宜蘭縣</td><td>736,259</td><td>676874.7352</td><td>-59384.2648</td><td>-8.0657</td><td>8.0657</td></tr><tr><td>17</td><td>雲林縣</td><td>1,683,422</td><td>1722922.9520</td><td>39500.9520</td><td>2.3465</td><td>2.3465</td></tr><tr><td>16</td><td>苗栗縣</td><td>1,288,903</td><td>1314406.2442</td><td>25503.2442</td><td>1.9787</td><td>1.9787</td></tr><tr><td>15</td><td>花蓮縣</td><td>444,612</td><td>419529.0515</td><td>-25082.9485</td><td>-5.6415</td><td>5.6415</td></tr><tr><td>4</td><td>台東縣</td><td>305,964</td><td>291164.7630</td><td>-14799.2370</td><td>-4.8369</td><td>4.8369</td></tr><tr><td>0</td><td>南投縣</td><td>500,977</td><td>488042.6291</td><td>-12934.3709</td><td>-2.5818</td><td>2.5818</td></tr><tr><td>6</td><td>嘉義縣</td><td>487,757</td><td>488652.0803</td><td>895.0803</td><td>0.1835</td><td>0.1835</td></tr></tbody></table>
     </section>
   </main>
 </body>

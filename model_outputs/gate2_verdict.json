@@ -1,29 +1,23 @@
 {
   "gate": 2,
-  "name": "Clustering",
+  "name": "Feature engineering",
   "verdict": "PASS",
   "score": 5,
   "checks": [
     {
-      "name": "scope-only clustering",
+      "name": "economic and structural features",
       "status": "PASS",
-      "detail": "K-Means profiles were built only from formal in-scope counties available in data."
+      "detail": "County economic indicators are combined with carrier and industry structure features."
     },
     {
-      "name": "dynamic K range",
+      "name": "target history features",
       "status": "PASS",
-      "detail": "K values were bounded by the scoped county count before silhouette scoring."
+      "detail": "Lag1, lag2, lag3, and rolling 3-month donation_count features are built by date."
     }
   ],
   "evidence": {
-    "artifact": "model_outputs/cluster_assignments.csv",
-    "scope_codes_used": [
-      1,
-      2,
-      15,
-      17,
-      18
-    ]
+    "numeric_features": 0,
+    "feature_importance_artifact": "model_outputs/donation_count_xgboost_ensemble/feature_importance.csv"
   },
   "warnings": []
 }

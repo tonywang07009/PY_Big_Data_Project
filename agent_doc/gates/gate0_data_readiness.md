@@ -2,23 +2,24 @@
 
 ## Purpose
 
-Confirm that source data is present, readable, and semantically ready before preprocessing or modeling.
+Confirm that the encoded source data is present, readable, and suitable for the formal Gate 7 county-month `donation_count` ensemble.
 
-## Planned Micro-Tasks
+## Formal Micro-Tasks
 
-- T0-A: discover files under `data/raw/`
-- T0-B: profile row counts, columns, dtypes, null rates, and date coverage
-- T0-C: validate semantic rules for county, month, counts, and target fields
-- T0-D: produce Diver/Counter data-readiness verdict
+- T0-A: read `data/raw/encoded_ml_dataset.csv`
+- T0-B: confirm required columns for county-month aggregation and ensemble training
+- T0-C: confirm all available `county_label` values and month coverage
+- T0-D: write `model_outputs/gate0_verdict.json`
+
+## Required Evidence
+
+- Source file exists and is readable.
+- Target column is `donation_count`.
+- Formal scope is all available county labels.
+- No synthetic county rows are added.
 
 ## Expected Outputs
 
-- `model_outputs/file_manifest.json`
-- `model_outputs/column_profile.json`
 - `model_outputs/gate0_verdict.json`
-- `reports/step0_report.md`
-
-## Discussion Status
-
-Implementation details are not finalized. Discuss source file schema, required columns, and pass/fail thresholds before coding.
-
+- `model_outputs/donation_count_xgboost_ensemble/county_month_matrix.csv`
+- `reports/final_project_report.md`

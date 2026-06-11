@@ -1,3 +1,5 @@
+"""Convert the original group proposal PDF into Markdown source material."""
+
 from markitdown import MarkItDown  
 md = MarkItDown()
 test_result = md.convert('group_six.pdf')

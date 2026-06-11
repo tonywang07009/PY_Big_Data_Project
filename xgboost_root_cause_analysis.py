@@ -1,5 +1,9 @@
 """
-Root-cause analysis for using encoded_ml_dataset.csv with XGBoost.
+Root-cause analysis for XGBoost pipeline choices.
+
+This script is diagnostic only. Its results helped identify why the old
+raw-row approach was unstable, but it does not generate the formal Gate 0-7
+artifacts. The formal mainline is `train_donation_count_xgboost_ensemble.py`.
 
 This script compares three pipeline families on the full dataset:
   1. county-month baseline

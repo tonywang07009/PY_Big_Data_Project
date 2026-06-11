@@ -1,4 +1,10 @@
-"""Shared project constants for the formal MecDonate delivery."""
+"""Legacy scope constants for the older six-county ratio delivery.
+
+The formal mainline now uses all available county labels through
+`train_donation_count_xgboost_ensemble.py`. These helpers remain only for
+legacy ratio/clustering scripts that still need the historical six-county
+scope.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -61,13 +67,13 @@ def add_county_name(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def filter_scope_counties(df: pd.DataFrame) -> pd.DataFrame:
-    """Keep only formal project counties available in the encoded dataset."""
+    """Keep only the historical six-county scope available in the encoded dataset."""
     scoped = df[df["county_label"].isin(SCOPE_CODES)].copy()
     return add_county_name(scoped).reset_index(drop=True)
 
 
 def scope_readiness(raw_county_labels: Iterable[int]) -> dict:
-    """Build the data-readiness summary for the formal six-county scope."""
+    """Build the data-readiness summary for the historical six-county scope."""
     available_codes = set(int(c) for c in raw_county_labels)
     available_scope = [
         {"county_code": c.code, "county_name": c.chinese_name}

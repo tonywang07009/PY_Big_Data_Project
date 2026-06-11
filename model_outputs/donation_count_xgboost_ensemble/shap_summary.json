@@ -1,0 +1,94 @@
+{
+  "target": "donation_count",
+  "selected_fold": "fold_2024-12",
+  "shap_rows": 19,
+  "numeric_features": [
+    "housing_burden",
+    "price_income_ratio",
+    "total_county_invoice_count",
+    "total_county_invoice_amount",
+    "avg_invoice_value",
+    "log_total_county_invoice_count",
+    "log_total_county_invoice_amount",
+    "carrier_usage_ratio",
+    "n_active_industries",
+    "industry_hhi",
+    "industry_entropy",
+    "top1_industry_share",
+    "top3_industry_share",
+    "row_count_per_county_month",
+    "month_num",
+    "month_sin",
+    "month_cos",
+    "time_index",
+    "donation_count_lag1",
+    "donation_count_lag2",
+    "donation_count_lag3",
+    "donation_count_roll3_mean",
+    "donation_count_roll3_std",
+    "donation_count_roll3_min",
+    "donation_count_roll3_max"
+  ],
+  "top_features": [
+    {
+      "feature": "county_label_2",
+      "mean_abs_shap": 0.34486523270606995
+    },
+    {
+      "feature": "donation_count_roll3_max",
+      "mean_abs_shap": 0.2725357413291931
+    },
+    {
+      "feature": "county_label_11",
+      "mean_abs_shap": 0.22026820480823517
+    },
+    {
+      "feature": "row_count_per_county_month",
+      "mean_abs_shap": 0.1767195612192154
+    },
+    {
+      "feature": "county_label_18",
+      "mean_abs_shap": 0.1640407145023346
+    },
+    {
+      "feature": "county_label_14",
+      "mean_abs_shap": 0.14081047475337982
+    },
+    {
+      "feature": "donation_count_lag1",
+      "mean_abs_shap": 0.13400107622146606
+    },
+    {
+      "feature": "county_label_1",
+      "mean_abs_shap": 0.1266571283340454
+    },
+    {
+      "feature": "month_num",
+      "mean_abs_shap": 0.12080966681241989
+    },
+    {
+      "feature": "county_label_4",
+      "mean_abs_shap": 0.10259629040956497
+    },
+    {
+      "feature": "donation_count_roll3_min",
+      "mean_abs_shap": 0.08712813258171082
+    },
+    {
+      "feature": "county_label_6",
+      "mean_abs_shap": 0.07827464491128922
+    },
+    {
+      "feature": "county_label_15",
+      "mean_abs_shap": 0.07792872190475464
+    },
+    {
+      "feature": "county_label_3",
+      "mean_abs_shap": 0.07133179903030396
+    },
+    {
+      "feature": "county_label_0",
+      "mean_abs_shap": 0.0702170729637146
+    }
+  ]
+}

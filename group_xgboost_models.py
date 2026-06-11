@@ -1,5 +1,11 @@
 """
-Train one XGBoost model per predefined county group on raw rows with time-split validation.
+Experiment: train one XGBoost model per predefined county group.
+
+This script is not the formal project mainline. The formal path is
+`train_donation_count_xgboost_ensemble.py`, which uses all available counties,
+county-month `donation_count`, monthly expanding walk-forward validation,
+county-wise numeric scaling, train-only calibration, and historical baseline
+blending.
 
 For each group:
   - preserve raw encoded rows (no county-month aggregation for modeling rows)

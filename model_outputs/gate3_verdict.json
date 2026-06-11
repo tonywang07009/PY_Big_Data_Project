@@ -1,25 +1,25 @@
 {
   "gate": 3,
-  "name": "Model build",
+  "name": "Formal model build",
   "verdict": "PASS",
   "score": 5,
   "checks": [
     {
-      "name": "model family comparison",
+      "name": "log-target XGBoost",
       "status": "PASS",
-      "detail": "Linear Regression, Ridge, Lasso, Random Forest, and XGBoost were trained and compared."
+      "detail": "The global XGBoost model is trained on log1p(donation_count)."
     },
     {
-      "name": "best model selected",
+      "name": "ensemble components",
       "status": "PASS",
-      "detail": "Best test R2 model: Ridge."
+      "detail": "The final prediction combines calibrated XGBoost with a historical county baseline."
     }
   ],
   "evidence": {
-    "artifact": "model_outputs/metrics/model_comparison.csv",
-    "best_model": "Ridge",
-    "n_train": 95,
-    "n_test": 120
+    "model_artifact": "model_outputs/donation_count_xgboost_ensemble/xgboost_model.json",
+    "calibration_artifact": "model_outputs/donation_count_xgboost_ensemble/calibration_params.json",
+    "selected_root_fold": "fold_2024-12",
+    "component_comparison_artifact": "model_outputs/donation_count_xgboost_ensemble/model_comparison.csv"
   },
   "warnings": []
 }

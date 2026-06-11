@@ -1,5 +1,8 @@
 """
-Enhanced donation_count raw-row XGBoost workflow.
+Experiment: enhanced donation_count raw-row XGBoost workflow.
+
+This is a diagnostic improvement path, not the formal Gate 7 project line.
+The formal mainline is `train_donation_count_xgboost_ensemble.py`.
 
 This keeps the original encoded raw-row grain, adds county identity,
 county-month structural features, target lag/rolling features, compares

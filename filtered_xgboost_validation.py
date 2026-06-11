@@ -1,5 +1,10 @@
 """
-Build filtered county-month CSVs and validate an XGBoost model on holdout counties.
+Legacy filtered validation experiment.
+
+This script is not the formal project mainline. The formal path is
+`train_donation_count_xgboost_ensemble.py`, which uses all available counties,
+county-month `donation_count`, monthly expanding walk-forward validation,
+county-wise numeric scaling, calibration, and historical baseline blending.
 
 Training counties: 1, 2, 15, 17, 18
 Validation counties: every other county in the engineered county-month matrix

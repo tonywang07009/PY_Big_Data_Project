@@ -1,31 +1,25 @@
 {
   "gate": 4,
-  "name": "Validation",
+  "name": "Monthly walk-forward validation",
   "verdict": "PASS",
   "score": 5,
   "checks": [
     {
-      "name": "time split",
+      "name": "fold coverage",
       "status": "PASS",
-      "detail": "Training uses 2019-2022 and testing uses 2023 onward with no shuffle."
+      "detail": "24 monthly folds were evaluated."
     },
     {
-      "name": "split audit",
+      "name": "formal ensemble accuracy",
       "status": "PASS",
-      "detail": "Train years: [2019, 2020, 2022]; test years: [2023, 2024]."
+      "detail": "Mean monthly ensemble sMAPE is 15.7392%."
     }
   ],
   "evidence": {
-    "train_years": [
-      2019,
-      2020,
-      2022
-    ],
-    "test_years": [
-      2023,
-      2024
-    ],
-    "shuffle": false
+    "summary_artifact": "model_outputs/donation_count_xgboost_ensemble/monthly_walk_forward_summary.csv",
+    "mean_monthly_ensemble_rmse": 71580.02230751539,
+    "mean_monthly_ensemble_smape": 15.73922435068789,
+    "mean_monthly_ensemble_r2": 0.9904162931559884
   },
   "warnings": []
 }

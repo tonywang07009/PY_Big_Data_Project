@@ -22,16 +22,17 @@ At the end of each gate:
 - validate required artifacts
 - write `model_outputs/gateN_verdict.json`
 - update the relevant `agent_doc/gates/gateN_*.md`
-- write an agent memory log under `agent_doc/agent_memory/work_daily/`
 - write a report under `reports/` when the gate produces human-facing results
 
 ## System-Level Checks
 
-After Gate 6:
+After Gate 7:
 
-- all gates are `PASS` or human-accepted `CONDITIONAL`
-- all human decisions are recorded
-- final model uses time-aware validation
+- Gate 0 through Gate 7 are `PASS` or human-accepted `CONDITIONAL`
+- final model uses monthly expanding Walk-Forward Analysis
+- numeric feature scalers are fit per `county_label` on train-fold rows only
+- county calibration is fit from train-fold months only
+- model comparison chart is generated for log-XGBoost, calibrated XGBoost, historical baseline, and final ensemble
+- Gate 7 validates ensemble metrics against formal thresholds
 - final outputs trace back to source data and model artifacts
 - reports are readable by future human maintainers
-

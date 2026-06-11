@@ -1,0 +1,15 @@
+{
+  "comparison_basis": "county-month deduplicated first, then aggregated to county",
+  "largest_abs_count_diff_county": {
+    "county_name": "宜蘭縣",
+    "abs_count_diff": 8372766.0,
+    "pct_diff": 2782.5095461388405
+  },
+  "largest_abs_pct_diff_county": {
+    "county_name": "台東縣",
+    "abs_pct_diff": 7548.582365566671,
+    "count_diff": 7878002.5
+  },
+  "mean_county_abs_pct_diff": 1776.8539769077622,
+  "median_county_abs_pct_diff": 1109.3272726241585
+}

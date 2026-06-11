@@ -1,32 +1,26 @@
 {
   "gate": 6,
   "name": "Final delivery",
-  "verdict": "CONDITIONAL",
-  "score": 3,
+  "verdict": "PASS",
+  "score": 5,
   "checks": [
     {
-      "name": "priority scoring",
+      "name": "formal report",
       "status": "PASS",
-      "detail": "Priority scores use predicted donation ratio times county invoice count, then min-max normalization."
+      "detail": "Final report, dashboard, tour guide, and model-comparison chart are generated from Gate 7 artifacts."
     },
     {
-      "name": "human deliverables",
+      "name": "formal conclusion",
       "status": "PASS",
-      "detail": "Final report, static dashboard, and Tour Guide were generated under reports/."
-    },
-    {
-      "name": "scope caveat",
-      "status": "CONDITIONAL",
-      "detail": "Delivery is complete for available scope counties, with missing data noted for 連江縣."
+      "detail": "Delivery status follows the Gate 7 formal ensemble acceptance verdict."
     }
   ],
   "evidence": {
-    "priority_artifact": "model_outputs/priority_scores.csv",
     "report_artifact": "reports/final_project_report.md",
     "dashboard_artifact": "reports/dashboard.html",
-    "tour_guide_artifact": "reports/tour_guide.md"
+    "tour_guide_artifact": "reports/tour_guide.md",
+    "chart_artifact": "reports/formal_model_comparison.png",
+    "best_component_by_r2": "Historical Baseline"
   },
-  "warnings": [
-    "Final conclusions exclude unavailable requested county: 連江縣"
-  ]
+  "warnings": []
 }

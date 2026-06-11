@@ -73,3 +73,38 @@ This file records human-approved project decisions that affect research directio
   - `model_outputs/` was renamed to `model_outputs/`.
   - `agent_doc/tool_designs/` content moved to `agent_doc/agent_doc/tool_designss/`.
   - `test_log/` content moved into `agent_doc/`.
+
+## Decision 008 - Formal Raw-Count XGBoost Mainline
+
+- **Date**: 2026-06-11
+- **Source**: Human instruction to audit from `model_outputs/donation_count_raw_xgboost`
+- **Decision**: Use all available raw counties, `donation_count`, raw-row XGBoost, yearly expanding Walk-Forward Analysis, and county-wise numeric standardization as the initial Gate 0-6 audit mainline.
+- **Rationale**: Existing documents mixed an older six-county `donation_ratio` Ridge flow with raw-count XGBoost outputs, causing severe project-document mismatch.
+- **Impact**:
+  - This decision is superseded by Decision 010.
+  - The raw-row scripts are retained as diagnostic evidence for the repeated-target and county-scale failure mode.
+
+## Decision 009 - XGBoost Ensemble Acceptance Gate
+
+- **Date**: 2026-06-11
+- **Source**: Human request for an XGBoost combination model to reduce county-level overprediction.
+- **Decision**: Add a county-month ensemble and Gate 7 acceptance process.
+- **Rationale**: The raw-row baseline overpredicts low-volume counties. The ensemble combines log-target XGBoost, county historical baseline, and county calibration to preserve county scale and reduce bias.
+- **Impact**:
+  - `train_donation_count_xgboost_ensemble.py` trains monthly walk-forward ensemble folds.
+  - `analyze_donation_count_xgboost_ensemble.py` generates SHAP and Gate 7 acceptance evidence.
+  - `agent_doc/xgboost_ensemble_architecture.md` documents the ensemble design.
+  - `model_outputs/gate7_verdict.json` records acceptance status.
+
+## Decision 010 - Gate 7 Formalization
+
+- **Date**: 2026-06-11
+- **Source**: Human instruction to make the Gate 7 version the official project version.
+- **Decision**: Promote the county-month XGBoost ensemble to the formal project mainline and rewrite Gate 0 through Gate 6 around that version.
+- **Rationale**: Gate 7 materially reduces county-level percent error and avoids the raw-row repeated-target failure mode.
+- **Impact**:
+  - `train_donation_count_xgboost_ensemble.py` is the formal training entry point.
+  - `analyze_donation_count_xgboost_ensemble.py` is the formal audit and acceptance entry point.
+  - `run_all.py` no longer runs the raw-row baseline as part of the formal pipeline.
+  - `src/final_delivery.py` writes Gate 0 through Gate 7 verdicts from Gate 7 ensemble artifacts.
+  - Raw-row and ratio-based scripts are retained only as legacy or diagnostic material.

@@ -1,5 +1,11 @@
 """
-MecDonate - Step 1: Build the county x month feature matrix.
+Legacy MecDonate ratio feature matrix builder.
+
+The formal project mainline is now `train_donation_count_xgboost_ensemble.py`,
+which uses county-month `donation_count`, monthly expanding walk-forward
+validation, log-target XGBoost, county calibration, and a historical
+baseline blend. This module is retained for historical ratio/clustering
+experiments only.
 
 The raw `encoded_ml_dataset.csv` is at the
     county x industry x carrier-type x month

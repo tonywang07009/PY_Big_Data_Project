@@ -1,5 +1,8 @@
 """
-MecDonate - Step 3: regression model comparison.
+Legacy MecDonate ratio model comparison.
+
+The formal project mainline is now `train_donation_count_xgboost_ensemble.py`.
+This module is retained for historical ratio/Ridge/XGBoost comparisons only.
 
 Predicts the monthly county donation_ratio. A time-based split prevents
 leakage: 2019-2022 for training, 2023-2024 for testing. Five models are

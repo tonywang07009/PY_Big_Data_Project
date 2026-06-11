@@ -1,23 +1,46 @@
 {
   "gate": 5,
-  "name": "Interpretability",
+  "name": "Interpretability and audit",
   "verdict": "PASS",
   "score": 5,
   "checks": [
     {
-      "name": "Ridge coefficient explanation",
+      "name": "SHAP",
       "status": "PASS",
-      "detail": "Standardized Ridge coefficients were exported for the best linear-model explanation."
+      "detail": "SHAP importance and summary plots are generated for the selected formal fold."
     },
     {
-      "name": "XGBoost SHAP comparison",
+      "name": "county error audit",
       "status": "PASS",
-      "detail": "SHAP importance table includes 18 features."
+      "detail": "County and county-month validation comparison tables are generated."
     }
   ],
   "evidence": {
-    "ridge_artifact": "model_outputs/metrics/ridge_coefficients.csv",
-    "shap_artifact": "model_outputs/shap/shap_importance.csv"
+    "shap_artifact": "model_outputs/donation_count_xgboost_ensemble/shap_importance.csv",
+    "county_artifact": "model_outputs/donation_count_xgboost_ensemble/county_validation_comparison.csv",
+    "county_month_artifact": "model_outputs/donation_count_xgboost_ensemble/county_month_validation_comparison.csv",
+    "top_shap_features": [
+      {
+        "feature": "county_label_2",
+        "mean_abs_shap": 0.34486523
+      },
+      {
+        "feature": "donation_count_roll3_max",
+        "mean_abs_shap": 0.27253574
+      },
+      {
+        "feature": "county_label_11",
+        "mean_abs_shap": 0.2202682
+      },
+      {
+        "feature": "row_count_per_county_month",
+        "mean_abs_shap": 0.17671956
+      },
+      {
+        "feature": "county_label_18",
+        "mean_abs_shap": 0.16404071
+      }
+    ]
   },
   "warnings": []
 }

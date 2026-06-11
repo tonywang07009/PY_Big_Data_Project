@@ -1,5 +1,7 @@
 # XGBoost Root Cause Analysis
 
+Legacy diagnostic report. This report explains earlier pipeline experiments and is not the formal project result. The formal project version is the Gate 7 county-month ensemble documented in `reports/final_project_report.md`.
+
 ## Data Profile
 
 - Raw rows: `110,373`
@@ -34,6 +36,6 @@
 
 ## Recommended Next Step
 
-- Use `county_month_baseline` or `raw_row_baseline` as the next baseline candidate depending on business preference between ratio and count targets.
-- If `donation_ratio` remains unstable under percentage-based metrics, compare it against a `donation_count`-first pipeline and derive ratio later.
-- If raw-row does not clearly win, keep the target at county-month granularity and enrich structural features rather than repeating the same target across many rows.
+- This diagnostic step has been superseded by the Gate 7 formal ensemble.
+- Use `reports/final_project_report.md` and `model_outputs/donation_count_xgboost_ensemble/` for the current project result.
+- Keep this report only as historical evidence for why the raw-row repeated-target approach was not selected as the final project line.

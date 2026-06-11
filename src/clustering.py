@@ -1,5 +1,9 @@
 """
-MecDonate - Step 2: K-Means clustering of counties.
+Legacy clustering utilities for county profile exploration.
+
+The formal prediction mainline is the Gate 7 county-month `donation_count`
+ensemble. Clustering outputs are exploratory context only and are no longer
+part of the formal Gate 0-7 execution path.
 
 The original workflow clusters county-level mean profiles and produces
 the legacy `cluster_assignments.csv` / `clustering_pca.png` outputs.
@@ -37,7 +41,7 @@ PROFILE_COLS = [
     "n_active_industries", "industry_hhi",
 ]
 
-
+#  transsmison to the munrcal label
 def county_profiles(cm: pd.DataFrame) -> pd.DataFrame:
     prof = cm.groupby("county_label")[PROFILE_COLS].mean()
     prof["county_name"] = prof.index.map(COUNTY_NAMES)
@@ -154,6 +158,7 @@ def _plot_grouped_pca(points: pd.DataFrame, output_root: Path) -> list[str]:
 
 
 def run_v2(cm: pd.DataFrame, outdir: str = "outputs") -> dict:
+
     output_root = Path(outdir)
     output_root.mkdir(parents=True, exist_ok=True)
 
@@ -162,6 +167,7 @@ def run_v2(cm: pd.DataFrame, outdir: str = "outputs") -> dict:
     mean_cols = _mean_cols()
 
     rep_scaler = StandardScaler()
+
     X_rep = rep_scaler.fit_transform(county_rep[rep_cols].to_numpy())
     ks, inertias, sils, best_k = _k_search(X_rep)
     km = KMeans(n_clusters=best_k, n_init=10, random_state=42).fit(X_rep)
@@ -170,6 +176,9 @@ def run_v2(cm: pd.DataFrame, outdir: str = "outputs") -> dict:
     # Month-level points only have PROFILE_COLS. We therefore center them
     # in the standardized county-mean feature space, while county std
     # features remain part of the county-level clustering step.
+
+
+    # TODO: the bugger : for nomalized 
     mean_scaler = StandardScaler()
     county_means_scaled = mean_scaler.fit_transform(county_rep[mean_cols].to_numpy())
     mean_centers = (
@@ -267,14 +276,17 @@ def run_v2(cm: pd.DataFrame, outdir: str = "outputs") -> dict:
 
 
 def run(cm: pd.DataFrame, outdir: str = "outputs") -> pd.DataFrame:
+
     Path(outdir).mkdir(parents=True, exist_ok=True)
     prof = county_profiles(cm)
+
     X = StandardScaler().fit_transform(prof[PROFILE_COLS].values)
     ks, inertias, sils, best_k = _k_search(X)
     _plot_k_search(ks, inertias, sils, best_k, Path(outdir) / "clustering_elbow_silhouette.png")
 
     km = KMeans(n_clusters=best_k, n_init=10, random_state=42).fit(X)
     prof["cluster"] = km.labels_
+
     pcs = PCA(n_components=2, random_state=42).fit_transform(X)
     prof["pc1"], prof["pc2"] = pcs[:, 0], pcs[:, 1]
 
@@ -283,6 +295,7 @@ def run(cm: pd.DataFrame, outdir: str = "outputs") -> pd.DataFrame:
     for _, r in prof.iterrows():
         ax.annotate(r["county_english_name"], (r["pc1"], r["pc2"]),
                     fontsize=9, xytext=(4, 4), textcoords="offset points")
+        
     ax.set(title=f"County clusters (K={best_k}) - PCA 2D",
            xlabel="PC1", ylabel="PC2")
     plt.colorbar(sc, label="cluster")
@@ -291,6 +304,7 @@ def run(cm: pd.DataFrame, outdir: str = "outputs") -> pd.DataFrame:
     plt.close(fig)
 
     prof.reset_index().to_csv(f"{outdir}/cluster_assignments.csv", index=False)
+    
     with open(f"{outdir}/clustering_metrics.json", "w", encoding="utf-8") as f:
         json.dump(
             {"k_values": ks, "inertia": inertias, "silhouette": sils, "best_k": best_k},
@@ -300,6 +314,7 @@ def run(cm: pd.DataFrame, outdir: str = "outputs") -> pd.DataFrame:
         )
 
     print(f"[clustering] best K = {best_k}, silhouette = {max(sils):.3f}")
+
     for c in sorted(prof["cluster"].unique()):
         members = prof[prof["cluster"] == c]["county_name"].tolist()
         print(f"  cluster {c}: {members}")

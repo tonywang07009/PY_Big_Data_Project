@@ -1,0 +1,51 @@
+{
+  "gate": 7,
+  "name": "Formal ensemble acceptance",
+  "verdict": "PASS",
+  "score": 5,
+  "checks": [
+    {
+      "name": "mean monthly sMAPE threshold",
+      "status": "PASS",
+      "threshold": 20.0,
+      "actual": 15.73922435068789
+    },
+    {
+      "name": "mean county absolute percent difference threshold",
+      "status": "PASS",
+      "threshold": 10.0,
+      "actual": 6.596645265065512
+    },
+    {
+      "name": "median county absolute percent difference threshold",
+      "status": "PASS",
+      "threshold": 10.0,
+      "actual": 6.08024566264909
+    },
+    {
+      "name": "formal artifact completeness",
+      "status": "PASS",
+      "artifacts": [
+        "model_outputs/donation_count_xgboost_ensemble/county_validation_comparison.csv",
+        "model_outputs/donation_count_xgboost_ensemble/county_month_validation_comparison.csv",
+        "model_outputs/donation_count_xgboost_ensemble/shap_importance.csv",
+        "model_outputs/donation_count_xgboost_ensemble/shap_summary.json",
+        "model_outputs/donation_count_xgboost_ensemble/model_comparison.csv",
+        "model_outputs/donation_count_xgboost_ensemble/model_comparison.png",
+        "reports/formal_model_comparison.png"
+      ]
+    }
+  ],
+  "evidence": {
+    "acceptance_artifact": "model_outputs/donation_count_xgboost_ensemble/acceptance_summary.json",
+    "mean_monthly_smape": 15.73922435068789,
+    "mean_county_abs_pct_diff": 6.596645265065512,
+    "median_county_abs_pct_diff": 6.08024566264909,
+    "thresholds": {
+      "max_mean_monthly_smape": 20.0,
+      "max_mean_county_abs_pct_diff": 10.0,
+      "max_median_county_abs_pct_diff": 10.0
+    }
+  },
+  "warnings": []
+}

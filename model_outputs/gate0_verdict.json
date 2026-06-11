@@ -1,32 +1,25 @@
 {
   "gate": 0,
   "name": "Data readiness",
-  "verdict": "CONDITIONAL",
-  "score": 3,
+  "verdict": "PASS",
+  "score": 5,
   "checks": [
     {
-      "name": "formal county scope coverage",
-      "status": "CONDITIONAL",
-      "detail": "Missing requested county data: 連江縣."
+      "name": "encoded source availability",
+      "status": "PASS",
+      "detail": "The formal source dataset is readable and covers all available county labels."
     },
     {
-      "name": "raw data availability",
+      "name": "county-month target availability",
       "status": "PASS",
-      "detail": "Encoded source dataset and county mapping were readable."
+      "detail": "Formal validation artifacts cover 19 counties and 456 county-month rows."
     }
   ],
   "evidence": {
-    "available_scope_count": 5,
-    "missing_scope_count": 1,
-    "scope_codes_used": [
-      1,
-      2,
-      15,
-      17,
-      18
-    ]
+    "source": "data/raw/encoded_ml_dataset.csv",
+    "formal_output_root": "model_outputs/donation_count_xgboost_ensemble",
+    "target": "donation_count",
+    "county_count": 19
   },
-  "warnings": [
-    "Requested county not found in source mapping/data: 連江縣"
-  ]
+  "warnings": []
 }
